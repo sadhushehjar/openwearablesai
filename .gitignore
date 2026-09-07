@@ -1,0 +1,21 @@
+# dependencies & build output
+node_modules/
+.next/
+out/
+.npmcache/
+*.tsbuildinfo
+next-env.d.ts
+
+# local legacy material — kept on disk, not published
+images/
+assets/
+dist/
+monoio/
+index.html
+build-artifact.py
+
+# os / editor
+.DS_Store
+*.pem
+.env*
+!.env.example

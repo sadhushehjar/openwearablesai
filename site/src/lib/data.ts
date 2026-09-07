@@ -1,0 +1,586 @@
+import type { SignalId } from "./signals";
+
+export const PERSON = {
+  name: "Shehjar Sadhu",
+  pronouns: "she/her",
+  role: "PhD, Electrical Engineering",
+  org: "Wearable Biosensing Lab · University of Rhode Island",
+  email: "shehjar_sadhu@uri.edu",
+  scholar: "https://scholar.google.com/citations?user=pOj-vwUAAAAJ&hl=en",
+  medium: "https://medium.com/@shehjarsadhu",
+  cv: "/Shehjar_Sadhu_CV.pdf",
+  grad: "2026",
+  summary:
+    "My research centres on Internet of Medical Things platforms that integrate wearable sensors and artificial intelligence to support remote psycho-physiological health monitoring.",
+} as const;
+
+export const NAV = [
+  { href: "#interests", label: "Research Interests" },
+  { href: "#projects", label: "Projects" },
+  { href: "#news", label: "News" },
+  { href: "#publications", label: "Publications" },
+  { href: "#open-source", label: "Open Source" },
+];
+
+/* ------------------------------------------------------------------ */
+/* hero beats — the scroll-scrubbed signal sequence                     */
+/* ------------------------------------------------------------------ */
+
+export interface Beat {
+  signal: SignalId;
+  eyebrow: string;
+  title: string;
+  body: string;
+  align: "center" | "left" | "right";
+  /** drawn onto the canvas readout — anchors each beat to a project */
+  stamp: string;
+  specs?: string[];
+}
+
+export const BEATS: Beat[] = [
+  {
+    signal: "ecg",
+    eyebrow: "Shehjar Sadhu, PhD",
+    title: "Wearable digital\nhealth research.",
+    body: "Internet of Medical Things platforms that integrate wearable sensors and artificial intelligence for remote psycho-physiological health monitoring.",
+    align: "center",
+    stamp: "WEARABLE BIOSENSING LAB · UNIVERSITY OF RHODE ISLAND",
+  },
+  {
+    signal: "ecg",
+    eyebrow: "01 — Cardiac signal",
+    title: "Continuous\ncardiac monitoring.",
+    body: "Arm-worn electrocardiography acquired over multi-hour sessions and synchronised through a serverless cloud pipeline. Pan–Tompkins detection yields R-peaks, and the resulting RR intervals support heart-rate variability analysis.",
+    align: "left",
+    stamp: "MINDER · 2024 — PRESENT",
+    specs: [
+      "Minder · NIH R01 · UMass Chan Medical School",
+      "arm-ECG, EDA and PPG acquisition",
+      "Best Demo Award, IEEE BSN 2025",
+    ],
+  },
+  {
+    signal: "ppg",
+    eyebrow: "02 — Optical pulse",
+    title: "Wrist-based\nphysiological sensing.",
+    body: "Consumer smartwatches provide continuous heart-rate data at low participant burden. The research contribution lies in establishing which segments meet the quality threshold required for downstream inference.",
+    align: "right",
+    stamp: "CAREWEAR · 2024 — PRESENT",
+    specs: [
+      "CareWear · 27 participants",
+      "Trier Social Stress Test protocol",
+      "Over 16 GB of physiological data",
+    ],
+  },
+  {
+    signal: "acc",
+    eyebrow: "03 — Inertial motion",
+    title: "Motion as a\nbehavioural marker.",
+    body: "Twenty children observed across structured and unstructured school-like activities, with approximately sixteen hours of video annotated by seven trained raters. Power-spectral-density features outperformed time-domain features, consistent with the repetitive character of fidgeting behaviour.",
+    align: "left",
+    stamp: "FIDGETSENSE · 2025",
+    specs: [
+      "FidgetSense · Galaxy Watch 4 at 30 Hz",
+      "83.97% balanced accuracy · 0.92 ROC AUC",
+      "ADHD vs. neurotypical, p = 0.0033",
+    ],
+  },
+  {
+    signal: "mouse",
+    eyebrow: "04 — Interaction data",
+    title: "Interaction data as\na digital biomarker.",
+    body: "Within a browser-based puzzle platform, cursor dynamics demonstrated greater stability than the concurrently recorded wearable stream — a finding that informed the design of subsequent data-quality controls.",
+    align: "right",
+    stamp: "MINDGAME · 2024 — 2025",
+    specs: [
+      "MindGame · ACM IoT 2025, Vienna",
+      "2,427 puzzle sessions recorded",
+      "Dataset released on Zenodo",
+    ],
+  },
+  {
+    signal: "eeg",
+    eyebrow: "05 — Clinical translation",
+    title: "From multimodal signal\nto clinical insight.",
+    body: "Seven sensing modalities across eight platforms, directed towards a single objective: reducing the distance between what a sensor records and what a clinical team can act upon.",
+    align: "center",
+    stamp: "BIOSIGNALVIZ · 2026",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/* research interests                                                  */
+/* ------------------------------------------------------------------ */
+
+export const INTERESTS = [
+  {
+    title: "Wearable digital health systems",
+    body: "End-to-end Internet of Medical Things platforms spanning device firmware, mobile applications, cloud infrastructure and clinician-facing interfaces.",
+  },
+  {
+    title: "Psycho-physiological signal analysis",
+    body: "Processing and interpretation of ECG, PPG, electrodermal activity and inertial data for the assessment of stress, attention and motor function.",
+  },
+  {
+    title: "Applied machine learning",
+    body: "Feature engineering, classical models and deep architectures for multimodal sensor fusion, with attention to validation strategy and generalisability.",
+  },
+  {
+    title: "Data quality and reliability",
+    body: "Quantifying the reliability of participant-generated wearable data in remote and naturalistic settings, and designing quality controls that operate in real time.",
+  },
+  {
+    title: "User-centred clinical design",
+    body: "Participatory design of analytics platforms with clinicians, so that longitudinal sensor data is presented in a form suited to clinical decision-making.",
+  },
+  {
+    title: "Clinical domains",
+    body: "ADHD, Parkinson's disease, epilepsy, opioid use disorder, dementia caregiving and stress management.",
+  },
+];
+
+export const METRICS = [
+  { value: 142, label: "Citations", sub: "Google Scholar" },
+  { value: 5, label: "h-index", sub: "i10-index 4" },
+  { value: 16, label: "Publications", sub: "peer-reviewed" },
+  { value: 8, label: "Research platforms", sub: "deployed to studies" },
+];
+
+/* ------------------------------------------------------------------ */
+/* research projects                                                   */
+/* ------------------------------------------------------------------ */
+
+export interface System {
+  id: string;
+  name: string;
+  tagline: string;
+  status: "Ongoing" | "Deployed" | "Published" | "Independent";
+  /** smartwatch work leads the showcase; other platforms follow */
+  group: "Smartwatch" | "Other";
+  year: string;
+  body: string;
+  image: string;
+  alt: string;
+  signals: SignalId[];
+  facts: { k: string; v: string }[];
+  stack: string[];
+  partner: string;
+}
+
+export const SYSTEMS: System[] = [
+  {
+    id: "carewear",
+    group: "Smartwatch",
+    name: "CareWear",
+    tagline: "Multimodal stress detection platform for mental health.",
+    status: "Ongoing",
+    year: "2024 — present",
+    body: "Twenty-seven participants completed a Trier Social Stress Test while wearing a consumer smartwatch and a custom chest belt, with a Biopac system providing reference physiology. The processing pipeline cleans and merges more than 16 GB of data, then benchmarks classical machine-learning models against DeepFusionNet, a per-sensor CNN–LSTM architecture with attention that learns heart-rate and motion representations before fusion.",
+    image: "/media/carewear-session.jpg",
+    alt: "CareWear data collection session: a seated participant wearing a chest belt and smartwatch using an under-desk exercise bike, beside a laptop displaying the companion application receiving a live acceleration stream.",
+    signals: ["ecg", "ppg", "acc"],
+    facts: [
+      { k: "Participants", v: "27 (13 M · 14 F)" },
+      { k: "Data volume", v: "Over 16 GB" },
+      { k: "Best configuration", v: "2 s window, IMU — 0.76 b-acc" },
+      { k: "Target venue", v: "IEEE Trans. Affective Computing" },
+    ],
+    stack: ["PyTorch", "Pan–Tompkins", "scikit-learn", "Kotlin"],
+    partner: "Brown Health",
+  },
+  {
+    id: "fidgetsense",
+    group: "Smartwatch",
+    name: "FidgetSense",
+    tagline: "Fidgeting behaviour detection in children with ADHD.",
+    status: "Published",
+    year: "2025",
+    body: "Twenty children aged 6–11 completed school-like activities — academic worksheets, structured and unstructured magnetic-tile tasks, and free play — while wearing a Galaxy Watch 4 sampling at 30 Hz under video observation. Seven raters, blinded to diagnostic status, annotated approximately sixteen hours of recordings. Frequency-domain features provided the strongest discrimination, consistent with the rhythmic and repetitive nature of the target behaviours.",
+    image: "/media/fidgetsense-behaviors.jpg",
+    alt: "FidgetSense concept diagram: a hand icon and three overlaid tri-axial motion traces feeding labelled behaviours — moving chair, twirling hair and finger tapping — into a scatter plot separated by a decision boundary.",
+    signals: ["acc", "gyr"],
+    facts: [
+      { k: "Cohort", v: "20 children · 6 with ADHD" },
+      { k: "Annotation", v: "~16 h video · 7 raters" },
+      { k: "Best model", v: "Gradient Boosting · PSD features" },
+      { k: "Balanced accuracy", v: "83.97% · AUC 0.92" },
+    ],
+    stack: ["Galaxy Watch 4", "scikit-learn", "StratifiedGroupKFold"],
+    partner: "Q2Behave LLC · URI Psychology",
+  },
+  {
+    id: "mindgame",
+    group: "Smartwatch",
+    name: "MindGame",
+    tagline:
+      "Internet of Medical Things puzzle platform for ADHD behaviour analysis.",
+    status: "Published",
+    year: "2024 — 2025",
+    body: "An IoMT platform pairing a browser-based tangram game with a smartwatch, capturing cursor dynamics and wearable sensor streams on a common clock. Across 2,427 puzzle sessions the study assessed whether wearable data is sufficiently reliable for remote behaviour monitoring, and established a set of data-quality metrics for in-lab versus at-home comparison.",
+    image: "/media/mindgame-puzzle.jpg",
+    alt: "MindGame interface: a tangram puzzle level showing a palette of coloured shapes on the left, a grey target silhouette in the centre, and a countdown timer with a completion meter.",
+    signals: ["mouse", "acc", "gyr", "ppg", "eeg"],
+    facts: [
+      { k: "Participants", v: "12 (5 with ADHD)" },
+      { k: "Sessions recorded", v: "2,427 puzzles" },
+      { k: "Venue", v: "ACM IoT 2025, Vienna" },
+      { k: "Dataset", v: "Public — Zenodo" },
+    ],
+    stack: ["Flask", "Google Cloud", "MQTT", "Wear OS", "MUSE EEG"],
+    partner: "URI Psychology",
+  },
+  {
+    id: "minder",
+    group: "Other",
+    name: "Minder",
+    tagline: "Cloud system for a wearable armband monitoring opioid use disorder.",
+    status: "Ongoing",
+    year: "2024 — present",
+    body: "A serverless extract-transform-load pipeline on AWS ingests and temporally aligns high-frequency arm-ECG, electrodermal activity and PPG from a custom textile armband across sessions exceeding six hours. A cross-platform Flutter application manages device pairing, event annotation and cloud synchronisation. The system is currently in active data collection towards a target of fifty participants.",
+    image: "/media/minder-armband.jpg",
+    alt: "Minder system diagram: a textile armband worn on the upper arm streaming ECG, EDA, IR and battery telemetry to AWS, beside tablet screens showing live ECG and EDA plots and a timestamped event-annotation log.",
+    signals: ["ecg", "eda", "ppg"],
+    facts: [
+      { k: "Funding", v: "NIH R01" },
+      { k: "Collaboration", v: "UMass Chan Medical School" },
+      { k: "Recognition", v: "Best Demo Award, IEEE BSN 2025" },
+      { k: "Session length", v: "6+ hours continuous" },
+    ],
+    stack: ["AWS Lambda", "Amazon S3", "Flutter", "Python"],
+    partner: "UMass Chan Medical School",
+  },
+  {
+    id: "riseabove",
+    group: "Other",
+    name: "RiseAbove",
+    tagline: "Epilepsy stigma self-management platform.",
+    status: "Deployed",
+    year: "2023 — 2025",
+    body: "A containerised Flask application deployed on Google Cloud Platform, developed in collaboration with a neuropsychologist to deliver an online stigma-reduction programme. The deployment supported a feasibility and acceptability study and three peer-reviewed publications in Epilepsy & Behavior.",
+    image: "/media/riseabove-portal.jpg",
+    alt: "RiseAbove portal: a participant at a desktop monitor displaying the stress-management module with before-and-after mood rating scales for deep breathing and relaxation exercises.",
+    signals: [],
+    facts: [
+      { k: "Publications", v: "3 · Epilepsy & Behavior" },
+      { k: "Funding", v: "Epilepsy Foundation New England" },
+      { k: "Infrastructure", v: "GCP Cloud Run" },
+      { k: "Collaboration", v: "Brown Health" },
+    ],
+    stack: ["Flask", "Docker", "Google Cloud Platform"],
+    partner: "Brown Health",
+  },
+  {
+    id: "kaya",
+    group: "Other",
+    name: "Kaya / iTex",
+    tagline: "E-textile glove system for Parkinson's disease tele-assessment.",
+    status: "Published",
+    year: "2022 — 2023",
+    body: "Finger-flex sensors and an inertial measurement unit integrated into a textile glove, with a Raspberry Pi companion tablet guiding participants through standardised motor examinations in the home. Machine-learning models achieved approximately 90% accuracy for tremor and rigidity assessment, and a follow-up study characterised the effect of medication intake on in-home motor exam performance.",
+    image: "/media/kaya-gloves.jpg",
+    alt: "Kaya system: e-textile gloves with finger flex sensors and an ESP32 microcontroller on the left, and a tablet companion application with a Raspberry Pi on the right.",
+    signals: ["acc", "gyr"],
+    facts: [
+      { k: "Accuracy", v: "~90% tremor and rigidity" },
+      { k: "Funding", v: "NSF CAREER" },
+      { k: "Venues", v: "IEEE BSN · MDPI Sensors" },
+      { k: "Setting", v: "In-home motor examination" },
+    ],
+    stack: ["ESP32", "Raspberry Pi", "scikit-learn"],
+    partner: "Brown Health",
+  },
+  {
+    id: "careportal",
+    group: "Other",
+    name: "CarePortal",
+    tagline: "Clinician-centred dashboard for wearable data analytics.",
+    status: "Published",
+    year: "2023",
+    body: "A wearable-data dashboard developed through participatory design with twenty-one clinician interviews, forming the basis of my master's thesis. Each interface affordance — carousel navigation, range selection, axis reset and export — was derived from documented clinician workflow requirements rather than assumed need.",
+    image: "/media/careportal-dashboard.jpg",
+    alt: "CarePortal dashboard: four variants of a daily heart-rate chart annotated with carousel navigation, a range slider, download and reset controls, and a box-plot summary view.",
+    signals: ["ppg"],
+    facts: [
+      { k: "Method", v: "21 clinician interviews" },
+      { k: "Journal", v: "JMIR Formative Research" },
+      { k: "Setting", v: "Hospital emergency department" },
+      { k: "Funding", v: "NIH R01" },
+    ],
+    stack: ["Plotly", "Flask", "Participatory design"],
+    partner: "Brown University",
+  },
+  {
+    id: "biosignalviz",
+    group: "Other",
+    name: "BiosignalViz",
+    tagline: "Multimodal biosignal dashboard with agentic pipeline recommendation.",
+    status: "Independent",
+    year: "2025 — present",
+    body: "A high-throughput dashboard for visualising multimodal biosignals, incorporating an agentic module that assesses signal quality and recommends an appropriate processing pipeline for artefact removal, filtering and resampling. System scalability and rendering latency were benchmarked against the MIT-BIH Arrhythmia Database.",
+    image: "/media/mindgame-architecture.jpg",
+    alt: "BiosignalViz architecture diagram showing multimodal biosignal ingestion, processing stages and a Firebase-backed performance-logging layer.",
+    signals: ["ecg"],
+    facts: [
+      { k: "Benchmark", v: "MIT-BIH Arrhythmia Database" },
+      { k: "Agent", v: "Signal quality → pipeline selection" },
+      { k: "Backend", v: "Firebase" },
+      { k: "Status", v: "In submission" },
+    ],
+    stack: ["Gemini API", "Firebase", "Python"],
+    partner: "Independent",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/* news                                                                */
+/* ------------------------------------------------------------------ */
+
+export const NEWS = [
+  {
+    year: "2025",
+    title: "Best Demo Award, IEEE BSN",
+    body: "The Minder armband system received the Best Demo Award at the IEEE International Conference on Body Sensor Networks.",
+  },
+  {
+    year: "2025",
+    title: "MindGame featured in Rhody Today",
+    body: "The University of Rhode Island news office published a feature on the ADHD puzzle-game platform and its wearable data collection.",
+  },
+  {
+    year: "2025",
+    title: "ACM IoT 2025, Vienna",
+    body: "Presented the MindGame data-reliability study at the 15th International Conference on the Internet of Things.",
+  },
+  {
+    year: "2025",
+    title: "Wearable Biosensing Lab news feature",
+    body: "Laboratory-wide feature covering digital health research across ADHD, Parkinson's disease and stress monitoring.",
+  },
+  {
+    year: "2025",
+    title: "Industry visit — AFFOA",
+    body: "Visited Advanced Functional Fabrics of America with the laboratory to review e-textile fabrication processes.",
+  },
+  {
+    year: "2024",
+    title: "Invited to the Rhode Island State House",
+    body: "Presented wearable health research to state legislators alongside the Wearable Biosensing Lab team.",
+  },
+  {
+    year: "2024, 2023",
+    title: "IEEE BSN Student Travel Award",
+    body: "Awarded on two occasions to attend the IEEE International Conference on Body Sensor Networks.",
+  },
+  {
+    year: "2022",
+    title: "IEEE/ACM CHASE",
+    body: "Student travel award for the International Conference on Connected Health: Applications, Systems and Engineering Technologies.",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/* open source                                                         */
+/* ------------------------------------------------------------------ */
+
+export const OPEN_SOURCE = [
+  {
+    name: "MindGame wearable dataset",
+    kind: "Dataset",
+    body: "Multimodal recordings from twelve participants across 2,427 puzzle sessions, comprising accelerometer, gyroscope, heart-rate and cursor activity together with the data-quality metrics reported in the ACM IoT 2025 paper.",
+    meta: "Zenodo · 10.5281/zenodo.16113318",
+    href: "https://doi.org/10.5281/zenodo.16113318",
+  },
+  {
+    name: "CareWear dataset",
+    kind: "Dataset — in preparation",
+    body: "A multimodal psycho-physiological dataset collected from a consumer smartwatch and custom chest belt under a Trier Social Stress Test protocol, with concurrent Biopac reference physiology.",
+    meta: "Release pending publication",
+  },
+  {
+    name: "MindGame platform",
+    kind: "Software",
+    body: "The IoMT puzzle-game stack: Flask backend, browser-based tangram client, MQTT bridge and the Wear OS companion application used for synchronised multimodal capture.",
+    meta: "Available on request",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/* publications                                                        */
+/* ------------------------------------------------------------------ */
+
+export interface Pub {
+  authors: string;
+  title: string;
+  venue: string;
+  year: string;
+  kind: "Journal" | "Conference";
+  first: boolean;
+  cites?: number;
+  note?: string;
+  url?: string;
+}
+
+export const PUBS: Pub[] = [
+  {
+    authors:
+      "Sadhu S, Ravichandran V, Bhagat N, Beatty A, Mankodiya K, Weyandt L, Costea G, Solanki D",
+    title:
+      "FidgetSense: Commodity Smartwatch-Based Monitoring of Fidgeting Behaviors in Children with ADHD",
+    venue: "ACM Transactions on Computing for Healthcare",
+    year: "2026",
+    kind: "Journal",
+    first: true,
+    note: "Under review",
+  },
+  {
+    authors: "Sadhu S, Bhagat N, Castillo E, Weyandt L, Mankodiya K, Solanki D",
+    title:
+      "Is wearable data reliable for monitoring behavior? Design of a wearable-based IoMT puzzle game for remote behavior monitoring",
+    venue:
+      "ACM International Conference on the Internet of Things (IoT '25), Vienna",
+    year: "2025",
+    kind: "Conference",
+    first: true,
+    url: "https://doi.org/10.1145/3770501.3770523",
+  },
+  {
+    authors: "Sadhu S, Solanki D, Mankodiya K, Al Rumon MA",
+    title:
+      "CareWear: A multimodal physiological dataset collected via a consumer-based wearable device for stress monitoring",
+    venue: "In preparation",
+    year: "2026",
+    kind: "Journal",
+    first: true,
+  },
+  {
+    authors: "Sadhu S, Solanki D, Brick LA, Nugent NR, Mankodiya K",
+    title:
+      "Designing a Clinician-Centered Wearable Data Dashboard (CarePortal): Participatory Design Study",
+    venue: "JMIR Formative Research",
+    year: "2023",
+    kind: "Journal",
+    first: true,
+    cites: 16,
+  },
+  {
+    authors:
+      "Sadhu S, Solanki D, Constant N, Ravichandran V, Cay G, Saikia MJ, Akbar U, Mankodiya K",
+    title:
+      "Towards a telehealth infrastructure supported by machine learning on edge/fog for Parkinson's movement screening",
+    venue: "Smart Health",
+    year: "2022",
+    kind: "Journal",
+    first: true,
+    cites: 16,
+  },
+  {
+    authors: "Sadhu S, Castillo E, Weyandt L, Solanki D, Mankodiya K",
+    title:
+      "Feasibility of a Digital Health Puzzle Game for Detecting Computer Mouse Behavioral Patterns in ADHD",
+    venue: "IEEE International Conference on Body Sensor Networks (BSN)",
+    year: "2024",
+    kind: "Conference",
+    first: true,
+  },
+  {
+    authors:
+      "Sadhu S, Ravichandran V, Constant N, Akbar U, Mankodiya K, Solanki D",
+    title:
+      "Exploring the Impact of Parkinson's Medication Intake on Motor Exams Performed in-home Using Smart Gloves",
+    venue: "IEEE International Conference on Body Sensor Networks (BSN)",
+    year: "2023",
+    kind: "Conference",
+    first: true,
+  },
+  {
+    authors: "Sadhu S, Yerule A, Constant N, Akbar U, Mankodiya K",
+    title: "Motor exercise classification using machine learning",
+    venue: "IEEE MIT Undergraduate Research Technology Conference (URTC)",
+    year: "2019",
+    kind: "Conference",
+    first: true,
+  },
+  {
+    authors:
+      "Ravichandran V, Sadhu S, Convey D, Guerrier S, Chomal S, Dupre AM, Akbar U, Solanki D, Mankodiya K",
+    title:
+      "iTex Gloves: Design and In-Home Evaluation of an E-Textile Glove System for Tele-Assessment of Parkinson's Disease",
+    venue: "Sensors",
+    year: "2023",
+    kind: "Journal",
+    first: false,
+    cites: 31,
+  },
+  {
+    authors:
+      "Cay G, Ravichandran V, Sadhu S, Zisk AH, Salisbury AL, Solanki D, Mankodiya K",
+    title:
+      "Recent advancement in sleep technologies: A literature review on clinical standards, sensors, apps, and AI methods",
+    venue: "IEEE Access",
+    year: "2022",
+    kind: "Journal",
+    first: false,
+    cites: 49,
+  },
+  {
+    authors:
+      "Chapman KR, Maynard T, Sadhu S, Mankodiya K, Uebelacker L, Davis JD, Ott BR, Tremont G",
+    title:
+      "Beta Test of a Multicomponent Mobile Health Application for Dementia Caregivers",
+    venue: "Journal of Technology in Behavioral Science",
+    year: "2023",
+    kind: "Journal",
+    first: false,
+  },
+  {
+    authors:
+      "Prieto S, Kiriakopoulos ET, Goldstein A, Kaden S, Tremont G, Mankodiya K, Castillo E, Sadhu S, Solanki D, Davis JD, Margolis SA",
+    title: "Toward a multimodal model of internalized epilepsy stigma",
+    venue: "Epilepsy & Behavior",
+    year: "2026",
+    kind: "Journal",
+    first: false,
+  },
+  {
+    authors:
+      "Prieto S, Kiriakopoulos ET, Goldstein A, Kaden S, Tremont G, Mankodiya K, Castillo E, Sadhu S, Solanki D, Davis JD, Margolis SA",
+    title:
+      "Stigma intersectionality and its impact on an epilepsy stigma self-management program",
+    venue: "Epilepsy & Behavior",
+    year: "2025",
+    kind: "Journal",
+    first: false,
+    cites: 5,
+  },
+  {
+    authors:
+      "Margolis SA, Prieto S, Goldstein A, Kaden S, Castillo E, Sadhu S, Solanki D, Larracey ET, Tremont G, Mankodiya K, Kiriakopoulos ET",
+    title:
+      "Feasibility and acceptability of an online epilepsy stigma self-management program",
+    venue: "Epilepsy & Behavior",
+    year: "2025",
+    kind: "Journal",
+    first: false,
+    cites: 7,
+  },
+  {
+    authors:
+      "Hicking F, Sadhu S, Ravichandran V, Weyandt L, Costea GO, Mankodiya K, Solanki D",
+    title:
+      "Comparative Investigation of Smartwatch Data in Children with ADHD and Non-ADHD",
+    venue: "IEEE International Conference on Body Sensor Networks (BSN)",
+    year: "2024",
+    kind: "Conference",
+    first: false,
+  },
+  {
+    authors:
+      "Seckin M, Sadhu S, Al Rumon MA, Gravel M, DiFazio H, Johnson N, Perry K, Solanki D, Mankodiya K",
+    title:
+      "MedDock: A 3D-Printed Smart Pill Dispenser with Sensitive Textile Sensor for Adherence Monitoring",
+    venue: "IEEE International Conference on Body Sensor Networks (BSN)",
+    year: "2024",
+    kind: "Conference",
+    first: false,
+  },
+];
