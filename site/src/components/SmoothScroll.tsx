@@ -21,11 +21,14 @@ export default function SmoothScroll() {
     gsap.registerPlugin(ScrollTrigger);
 
     const lenis = new Lenis({
-      duration: 1.05,
-      // slight overshoot-free expo — reads as weight, not lag
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 1.6,
+      // lerp tracks the input pointer-for-pointer; the duration/easing mode
+      // schedules a ~1s animation per wheel tick, which reads as lag and is
+      // what makes a long pinned section feel unresponsive.
+      lerp: 0.14,
       wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+      // native scrolling on touch — smoothing a finger drag always feels wrong
+      syncTouch: false,
     });
 
     lenis.on("scroll", ScrollTrigger.update);
@@ -34,7 +37,37 @@ export default function SmoothScroll() {
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
-    // anchor links go through Lenis so they ease instead of jumping
+    /**
+     * Anchor jumps, tweened by hand.
+     *
+     * `lenis.scrollTo(target, { duration })` is cancelled by the pointerdown of
+     * the very click that triggers it, stranding the jump partway; its `lock`
+     * option suppresses the scroll entirely rather than just the interruption.
+     * So we run the easing ourselves and push each frame in with
+     * `immediate: true`, which no interruption logic touches.
+     */
+    let jumpRaf = 0;
+    const cancelJump = () => cancelAnimationFrame(jumpRaf);
+
+    const jumpTo = (top: number) => {
+      cancelJump();
+      const start = window.scrollY;
+      const dist = top - start;
+      if (Math.abs(dist) < 2) return;
+
+      // longer trips get a little more time, but never a sluggish amount
+      const dur = Math.min(1100, Math.max(450, Math.abs(dist) * 0.55));
+      const t0 = performance.now();
+
+      const step = (now: number) => {
+        const k = Math.min(1, (now - t0) / dur);
+        const eased = 1 - Math.pow(1 - k, 3); // easeOutCubic
+        lenis.scrollTo(start + dist * eased, { immediate: true });
+        if (k < 1) jumpRaf = requestAnimationFrame(step);
+      };
+      jumpRaf = requestAnimationFrame(step);
+    };
+
     const onClick = (e: MouseEvent) => {
       const a = (e.target as HTMLElement)?.closest?.('a[href^="#"]');
       if (!a) return;
@@ -43,9 +76,14 @@ export default function SmoothScroll() {
       const el = document.querySelector(id);
       if (!el) return;
       e.preventDefault();
-      lenis.scrollTo(el as HTMLElement, { offset: -8, duration: 1.2 });
+      jumpTo(el.getBoundingClientRect().top + window.scrollY - 8);
     };
     document.addEventListener("click", onClick);
+
+    // reaching for the wheel mid-jump should win — that is what "intuitive"
+    // means here: the page never fights the user's own input
+    window.addEventListener("wheel", cancelJump, { passive: true });
+    window.addEventListener("touchstart", cancelJump, { passive: true });
 
     // fonts and images shift layout; re-measure once they land
     const refresh = () => ScrollTrigger.refresh();
@@ -53,7 +91,10 @@ export default function SmoothScroll() {
     window.addEventListener("load", refresh);
 
     return () => {
+      cancelJump();
       document.removeEventListener("click", onClick);
+      window.removeEventListener("wheel", cancelJump);
+      window.removeEventListener("touchstart", cancelJump);
       window.removeEventListener("load", refresh);
       gsap.ticker.remove(tick);
       lenis.destroy();

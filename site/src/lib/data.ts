@@ -30,6 +30,8 @@ export interface Beat {
   signal: SignalId;
   eyebrow: string;
   title: string;
+  /** secondary line under the name on the opening beat */
+  subtitle?: string;
   body: string;
   align: "center" | "left" | "right";
   /** drawn onto the canvas readout — anchors each beat to a project */
@@ -40,8 +42,9 @@ export interface Beat {
 export const BEATS: Beat[] = [
   {
     signal: "ecg",
-    eyebrow: "Shehjar Sadhu, PhD",
-    title: "Wearable digital\nhealth research.",
+    eyebrow: "PhD · Electrical Engineering",
+    title: "Shehjar Sadhu",
+    subtitle: "Wearable digital health research.",
     body: "Internet of Medical Things platforms that integrate wearable sensors and artificial intelligence for remote psycho-physiological health monitoring.",
     align: "center",
     stamp: "WEARABLE BIOSENSING LAB · UNIVERSITY OF RHODE ISLAND",

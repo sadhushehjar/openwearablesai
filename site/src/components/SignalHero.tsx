@@ -25,14 +25,22 @@ import {
  * layout thrash, and scroll stays native-feeling on touch.
  */
 
-const SEGMENT_VH = 88; // scroll distance per beat
+/**
+ * Scroll distance per beat.
+ *
+ * This is the single most important number for how the page feels. At 88vh the
+ * intro consumed 5.4 screens of scrolling and read as a frozen page; 48vh keeps
+ * the sequence cinematic while letting a normal flick carry you through a beat.
+ */
+const SEGMENT_VH = 48;
 
 export default function SignalHero() {
   const trackRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const beatsRef = useRef<HTMLDivElement>(null);
-  const railRef = useRef<HTMLDivElement>(null);
+  const railRef = useRef<HTMLOListElement>(null);
   const cueRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -83,7 +91,7 @@ export default function SignalHero() {
       ? Array.from(beatsRef.current.children) as HTMLElement[]
       : [];
     const railEls = railRef.current
-      ? Array.from(railRef.current.children) as HTMLElement[]
+      ? Array.from(railRef.current.querySelectorAll<HTMLElement>("[data-dash]"))
       : [];
 
     const paintText = (s: number) => {
@@ -98,11 +106,19 @@ export default function SignalHero() {
       }
       for (let i = 0; i < railEls.length; i++) {
         const on = Math.abs(s - i) < 0.5;
-        railEls[i].style.opacity = on ? "1" : "0.3";
-        railEls[i].style.transform = `scaleX(${on ? 1 : 0.4})`;
+        const passed = s > i - 0.5;
+        railEls[i].style.opacity = on ? "1" : passed ? "0.6" : "0.28";
+        railEls[i].style.transform = `scaleX(${on ? 1 : 0.5})`;
+        railEls[i].style.backgroundColor = on
+          ? "var(--color-accent)"
+          : "";
+      }
+      if (progressRef.current) {
+        progressRef.current.style.transform = `scaleX(${segments ? s / segments : 0})`;
       }
       if (cueRef.current) {
-        cueRef.current.style.opacity = String(clamp01(1 - s * 2.4));
+        // fades once you are clearly moving, returns if you scroll back up
+        cueRef.current.style.opacity = String(clamp01(1 - s * 1.6));
       }
     };
 
@@ -298,7 +314,7 @@ export default function SignalHero() {
       if (!running) return;
       readScroll();
       // critically-damped-ish follow: the scrub keeps weight without lagging
-      sEased += (sTarget - sEased) * (reduced ? 1 : 0.12);
+      sEased += (sTarget - sEased) * (reduced ? 1 : 0.2);
       if (Math.abs(sTarget - sEased) < 0.0004) sEased = sTarget;
       paintText(sEased);
       draw(time);
@@ -321,6 +337,19 @@ export default function SignalHero() {
       className="relative"
       aria-label="Introduction"
     >
+      {/* anchor targets, one per beat, spaced across the scrollable span */}
+      {BEATS.map((_, i) => (
+        <span
+          key={i}
+          id={`beat-${i}`}
+          aria-hidden="true"
+          className="absolute left-0 h-px w-px"
+          style={{
+            top: `calc((100% - 100svh) * ${i / (BEATS.length - 1)})`,
+          }}
+        />
+      ))}
+
       <div className="sticky top-0 h-svh overflow-hidden bg-[radial-gradient(120%_80%_at_50%_45%,var(--color-void)_0%,var(--color-ground)_62%)]">
         <canvas
           ref={canvasRef}
@@ -377,9 +406,16 @@ export default function SignalHero() {
                 >
                   <span className="u-eyebrow mb-5 block">{b.eyebrow}</span>
                   {i === 0 ? (
-                    <h1 className="u-lume whitespace-pre-line text-[clamp(2.4rem,6.4vw,5rem)] font-bold tracking-[-0.045em]">
-                      {b.title}
-                    </h1>
+                    <>
+                      <h1 className="u-lume text-[clamp(3rem,9vw,7.5rem)] leading-[0.92] font-bold tracking-[-0.05em]">
+                        {b.title}
+                      </h1>
+                      {b.subtitle && (
+                        <p className="mt-4 text-[clamp(1.1rem,2.4vw,1.9rem)] font-medium tracking-[-0.025em] text-ink-3">
+                          {b.subtitle}
+                        </p>
+                      )}
+                    </>
                   ) : (
                     <h2 className="u-lume whitespace-pre-line text-[clamp(1.75rem,3.6vw,2.9rem)]">
                       {b.title}
@@ -439,18 +475,43 @@ export default function SignalHero() {
           ))}
         </div>
 
-        {/* beat rail */}
-        <div
-          ref={railRef}
-          aria-hidden="true"
-          className="absolute right-[clamp(16px,3vw,40px)] top-1/2 hidden -translate-y-1/2 flex-col gap-4 md:flex"
+        {/* Beat rail — a real control, not decoration. Tells you how many
+            steps there are, which one you are on, and lets you jump. */}
+        <nav
+          aria-label="Introduction sequence"
+          className="absolute right-[clamp(12px,2.5vw,32px)] top-1/2 hidden -translate-y-1/2 md:block"
         >
-          {BEATS.map((_, i) => (
-            <span
-              key={i}
-              className="block h-px w-6 origin-right bg-ink/45 transition-all duration-500"
-            />
-          ))}
+          <ol ref={railRef} className="flex flex-col gap-1">
+            {BEATS.map((b, i) => (
+              <li key={i}>
+                <a
+                  href={`#beat-${i}`}
+                  aria-label={`Go to ${i === 0 ? b.title : b.title.replace(/\n/g, " ")}`}
+                  className="group flex cursor-pointer items-center justify-end gap-3 py-1.5 pl-3"
+                >
+                  <span className="max-w-0 overflow-hidden font-mono text-[0.66rem] whitespace-nowrap text-ink-3 opacity-0 transition-all duration-300 group-hover:max-w-[180px] group-hover:opacity-100">
+                    {i === 0 ? "Start" : b.eyebrow.replace(/^\d+\s—\s/, "")}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    data-dash
+                    className="block h-0.5 w-7 origin-right rounded-full bg-ink/30 transition-all duration-500 group-hover:bg-ink/70"
+                  />
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
+        {/* progress through the sequence — makes the pinned section legible */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-px bg-[var(--color-line)]"
+        >
+          <span
+            ref={progressRef}
+            className="block h-px origin-left scale-x-0 bg-accent"
+          />
         </div>
 
         {/* scroll cue */}

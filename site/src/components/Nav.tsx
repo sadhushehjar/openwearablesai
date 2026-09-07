@@ -6,6 +6,7 @@ import { NAV, PERSON } from "@/lib/data";
 export default function Nav() {
   const [stuck, setStuck] = useState(false);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("");
   const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -28,6 +29,30 @@ export default function Nav() {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
+  }, []);
+
+  // which section am I in? nav needs to say so — without it a long page gives
+  // no sense of place.
+  useEffect(() => {
+    const ids = NAV.map((n) => n.href.slice(1));
+    const sections = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el);
+    if (!sections.length) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActive(`#${visible.target.id}`);
+      },
+      // a band across the upper-middle of the viewport, so the active item
+      // changes when a section genuinely takes over the screen
+      { rootMargin: "-20% 0px -55% 0px", threshold: [0, 0.25, 0.5] },
+    );
+    sections.forEach((el) => io.observe(el));
+    return () => io.disconnect();
   }, []);
 
   useEffect(() => {
@@ -55,16 +80,30 @@ export default function Nav() {
         </a>
 
         <ul className="mx-auto hidden items-center gap-7 md:flex">
-          {NAV.map((n) => (
-            <li key={n.href}>
-              <a
-                href={n.href}
-                className="text-[0.8rem] text-ink-3 transition-colors duration-200 hover:text-ink"
-              >
-                {n.label}
-              </a>
-            </li>
-          ))}
+          {NAV.map((n) => {
+            const on = active === n.href;
+            return (
+              <li key={n.href}>
+                <a
+                  href={n.href}
+                  aria-current={on ? "true" : undefined}
+                  className={[
+                    "relative text-[0.8rem] transition-colors duration-200 hover:text-ink",
+                    on ? "text-ink" : "text-ink-3",
+                  ].join(" ")}
+                >
+                  {n.label}
+                  <span
+                    aria-hidden="true"
+                    className={[
+                      "absolute -bottom-1.5 left-0 h-px w-full origin-left bg-accent transition-transform duration-300",
+                      on ? "scale-x-100" : "scale-x-0",
+                    ].join(" ")}
+                  />
+                </a>
+              </li>
+            );
+          })}
         </ul>
 
         <div className="ml-auto flex items-center gap-2 md:ml-0">
