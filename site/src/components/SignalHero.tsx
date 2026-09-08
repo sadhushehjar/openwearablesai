@@ -439,7 +439,9 @@ export default function SignalHero() {
 
         {/* beat copy */}
         <div ref={beatsRef} className="absolute inset-0">
-          {BEATS.map((b, i) => (
+          {BEATS.map((b, i) => {
+            const isBanner = i === 0;
+            return (
             <div
               key={i}
               className={[
@@ -454,7 +456,13 @@ export default function SignalHero() {
               {b.align === "center" && (
                 <span
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(58%_46%_at_50%_42%,var(--color-ground)_0%,rgba(250,250,250,0.92)_58%,rgba(250,250,250,0)_100%)]"
+                  className={[
+                    "pointer-events-none absolute inset-0",
+                    isBanner
+                      // the banner fills the width, so its wash has to as well
+                      ? "bg-[radial-gradient(92%_58%_at_58%_42%,var(--color-ground)_0%,rgba(250,250,250,0.93)_62%,rgba(250,250,250,0)_100%)]"
+                      : "bg-[radial-gradient(58%_46%_at_50%_42%,var(--color-ground)_0%,rgba(250,250,250,0.92)_58%,rgba(250,250,250,0)_100%)]",
+                  ].join(" ")}
                 />
               )}
 
@@ -473,69 +481,86 @@ export default function SignalHero() {
               <div
                 className={[
                   "u-shell relative w-full",
-                  b.align === "center" ? "text-center" : "",
+                  // the banner is left-aligned across the full measure; the
+                  // later beats keep their centred / side-aligned treatment
+                  !isBanner && b.align === "center" ? "text-center" : "",
                 ].join(" ")}
               >
-                <div
-                  className={[
-                    b.align === "center"
-                      ? "max-w-[min(900px,94vw)] mx-auto"
-                      : b.align === "right"
-                        ? "max-w-[min(520px,92vw)] ml-auto text-right"
-                        : "max-w-[min(520px,92vw)] mr-auto",
-                  ].join(" ")}
-                >
-                  {/* the banner: the visitor meets the person on arrival */}
-                  {b.portrait && (
-                    <div className="mb-7 flex justify-center">
-                      <div className="relative h-[clamp(104px,13vw,164px)] w-[clamp(104px,13vw,164px)] overflow-hidden rounded-full border border-[var(--color-line-2)] shadow-[0_18px_50px_-18px_rgba(9,9,11,0.35)]">
-                        <Image
-                          src={b.portrait}
-                          alt={`${PERSON.name}, ${PERSON.role}`}
-                          fill
-                          sizes="164px"
-                          priority
-                          className="object-cover"
-                        />
+                {isBanner ? (
+                  <div className="grid items-center gap-x-14 gap-y-8 lg:grid-cols-[auto_minmax(0,1fr)]">
+                    {/* the person, sized to hold its own against the name */}
+                    {b.portrait && (
+                      <div className="order-first lg:justify-self-start">
+                        <div className="relative h-[clamp(132px,20vw,300px)] w-[clamp(132px,20vw,300px)] overflow-hidden rounded-full border border-[var(--color-line-2)] shadow-[0_24px_60px_-20px_rgba(9,9,11,0.38)]">
+                          <Image
+                            src={b.portrait}
+                            alt={`${PERSON.name}, ${PERSON.role}`}
+                            fill
+                            sizes="(max-width: 1024px) 200px, 300px"
+                            priority
+                            className="object-cover"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  <span className="u-eyebrow mb-5 block">{b.eyebrow}</span>
-                  {i === 0 ? (
-                    <>
-                      <h1 className="u-lume text-[clamp(2.6rem,7.6vw,6.2rem)] leading-[0.94] font-bold tracking-[-0.05em]">
+                    <div className="text-left">
+                      <h1 className="u-lume text-[clamp(2.6rem,7.4vw,5.8rem)] leading-[0.94] font-bold tracking-[-0.05em]">
                         {b.title}
                       </h1>
+                      <span className="u-eyebrow mt-4 block">{b.eyebrow}</span>
                       {b.subtitle && (
                         <p className="mt-3 text-[clamp(1.05rem,2.1vw,1.65rem)] font-medium tracking-[-0.025em] text-ink-3">
                           {b.subtitle}
                         </p>
                       )}
-                    </>
-                  ) : (
-                    <h2 className="u-lume whitespace-pre-line text-[clamp(1.75rem,3.6vw,2.9rem)]">
-                      {b.title}
-                    </h2>
-                  )}
+
+                      <p className="mt-6 max-w-[54ch] text-[clamp(0.98rem,1.5vw,1.1rem)] text-ink-2 [text-wrap:pretty]">
+                        {b.bodyShort ? (
+                          <>
+                            <span className="sm:hidden">{b.bodyShort}</span>
+                            <span className="hidden sm:inline">{b.body}</span>
+                          </>
+                        ) : (
+                          b.body
+                        )}
+                      </p>
+
+                      <div className="pointer-events-auto mt-9 flex flex-wrap gap-3">
+                        <a
+                          href="#projects"
+                          className="rounded-full bg-ink px-6 py-3 text-sm font-semibold text-ground transition-transform duration-200 hover:-translate-y-0.5 hover:bg-ink/90"
+                        >
+                          View projects
+                        </a>
+                        <a
+                          href="#publications"
+                          className="rounded-full border border-[var(--color-line-2)] bg-ground/85 px-6 py-3 text-sm font-semibold text-ink-2 backdrop-blur-sm transition-colors duration-200 hover:border-accent hover:text-accent"
+                        >
+                          Publications
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                <div
+                  className={[
+                    b.align === "right"
+                      ? "max-w-[min(520px,92vw)] ml-auto text-right"
+                      : "max-w-[min(520px,92vw)] mr-auto",
+                  ].join(" ")}
+                >
+                  <span className="u-eyebrow mb-5 block">{b.eyebrow}</span>
+                  <h2 className="u-lume whitespace-pre-line text-[clamp(1.75rem,3.6vw,2.9rem)]">
+                    {b.title}
+                  </h2>
                   <p
                     className={[
                       "mt-5 text-[clamp(0.98rem,1.5vw,1.1rem)] text-ink-2 [text-wrap:pretty]",
-                      b.align === "center"
-                        ? "mx-auto max-w-[58ch]"
-                        : b.align === "right"
-                          ? "ml-auto max-w-[46ch]"
-                          : "max-w-[46ch]",
+                      b.align === "right" ? "ml-auto max-w-[46ch]" : "max-w-[46ch]",
                     ].join(" ")}
                   >
-                    {b.bodyShort ? (
-                      <>
-                        <span className="sm:hidden">{b.bodyShort}</span>
-                        <span className="hidden sm:inline">{b.body}</span>
-                      </>
-                    ) : (
-                      b.body
-                    )}
+                    {b.body}
                   </p>
 
                   {b.specs && (
@@ -556,27 +581,12 @@ export default function SignalHero() {
                       ))}
                     </ul>
                   )}
-
-                  {i === 0 && (
-                    <div className="pointer-events-auto mt-9 flex flex-wrap justify-center gap-3">
-                      <a
-                        href="#projects"
-                        className="rounded-full bg-ink px-6 py-3 text-sm font-semibold text-ground transition-transform duration-200 hover:-translate-y-0.5 hover:bg-ink/90"
-                      >
-                        View projects
-                      </a>
-                      <a
-                        href="#publications"
-                        className="rounded-full border border-[var(--color-line-2)] bg-ground/85 px-6 py-3 text-sm font-semibold text-ink-2 backdrop-blur-sm transition-colors duration-200 hover:border-accent hover:text-accent"
-                      >
-                        Publications
-                      </a>
-                    </div>
-                  )}
                 </div>
+                )}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Beat rail — a real control, not decoration. Tells you how many
