@@ -221,8 +221,8 @@ export const SYSTEMS: System[] = [
     facts: [
       { k: "Participants", v: "27 (13 M · 14 F)" },
       { k: "Data volume", v: "Over 16 GB" },
-      { k: "Best configuration", v: "2 s window, IMU — 0.76 b-acc" },
-      { k: "Status", v: "Manuscript in preparation" },
+      { k: "DeepFusionNet", v: "0.67 b-acc · 0.76 F1 (ACC+HR)" },
+      { k: "Combined set", v: "0.77 b-acc · 0.83 F1" },
     ],
     stack: ["PyTorch", "Pan–Tompkins", "scikit-learn", "Kotlin"],
     partner: "Brown Health",
@@ -356,8 +356,8 @@ export const SYSTEMS: System[] = [
     status: "Independent",
     year: "2025 — present",
     body: "A high-throughput dashboard for visualising multimodal biosignals, incorporating an agentic module that assesses signal quality and recommends an appropriate processing pipeline for artefact removal, filtering and resampling. System scalability and rendering latency were benchmarked against the MIT-BIH Arrhythmia Database.",
-    image: asset("/media/mindgame-architecture.jpg"),
-    alt: "BiosignalViz architecture diagram showing multimodal biosignal ingestion, processing stages and a Firebase-backed performance-logging layer.",
+    image: asset("/media/biosignal-processing.jpg"),
+    alt: "Multi-panel biosignal output: an ECG trace in millivolts with detected R-peaks marked, the heart rate derived from those intervals, and the reference heart rate reported by the acquisition system for comparison.",
     signals: ["ecg"],
     facts: [
       { k: "Benchmark", v: "MIT-BIH Arrhythmia Database" },

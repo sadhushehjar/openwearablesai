@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { SIGNAL_BY_ID, hexToRgb, rgba, clamp01, smooth } from "@/lib/signals";
+import { asset } from "@/lib/data";
 
 /**
  * The smartwatch band.
@@ -230,6 +232,35 @@ export default function WatchStage() {
               sampling at 30 Hz. Getting a commodity device to hold a rate and
               survive a session was its own body of work.
             </p>
+
+            {/* the device in use, so the drawn watch is not the only evidence */}
+            <ul className="mt-7 grid grid-cols-2 gap-3 sm:max-w-md">
+              {[
+                {
+                  src: "/media/carewear-watch-protocol.jpg",
+                  alt: "A Galaxy Watch worn on the wrist showing the CareWear app stepping through the stress-test protocol: Rest 1, Prepare Speech, Give Speech.",
+                  cap: "Protocol on the wrist",
+                },
+                {
+                  src: "/media/carewear-session-live.jpg",
+                  alt: "A live CareWear session: the watch app connected over MQTT on the wrist, with the web dashboard receiving the stream on the monitor behind.",
+                  cap: "Streaming over MQTT",
+                },
+              ].map((ph) => (
+                <li key={ph.src}>
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-[var(--color-line)] bg-surface">
+                    <Image
+                      src={asset(ph.src)}
+                      alt={ph.alt}
+                      fill
+                      sizes="(max-width: 640px) 45vw, 220px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <p className="mt-2 font-mono text-[0.62rem] text-ink-4">{ph.cap}</p>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
