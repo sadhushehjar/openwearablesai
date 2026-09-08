@@ -34,16 +34,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # openwearablesai.com serves from the root, so PAGES_BASE_PATH is unset
+      # and assets are addressed root-absolutely. Setting it again would break
+      # the apex domain the same way leaving it unset broke the github.io
+      # subpath: the prefix has to match wherever the site is actually served.
       - name: Build static export
         run: npm run build
-        env:
-          # While the site is served from https://<user>.github.io/<repo>/ every
-          # asset needs that subpath, or the browser requests /_next/... from the
-          # domain root and the page renders unstyled.
-          #
-          # DELETE THIS `env:` BLOCK once openwearablesai.com points at Pages —
-          # the apex domain serves from the root and the prefix breaks it.
-          PAGES_BASE_PATH: /openwearablesai
 
       # enablement:true turns Pages on if it is ever off, rather than failing
       # the run the way the first deploy did
