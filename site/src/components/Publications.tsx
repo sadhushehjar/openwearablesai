@@ -54,7 +54,7 @@ export default function Publications() {
             href={PERSON.scholar}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 rounded-full border border-[var(--color-line-2)] px-5 py-2.5 text-[0.82rem] font-medium text-ink-2 transition-colors duration-200 hover:border-accent hover:text-accent"
+            className="group inline-flex min-h-11 items-center gap-2 rounded-full border border-[var(--color-line-2)] px-5 py-2.5 text-[0.82rem] font-medium text-ink-2 transition-colors duration-200 hover:border-accent hover:text-accent"
           >
             Google Scholar
             <svg
@@ -90,7 +90,7 @@ export default function Publications() {
                 aria-pressed={active}
                 onClick={() => setFilter(f)}
                 className={[
-                  "cursor-pointer rounded-full px-4 py-2 text-[0.8rem] font-medium transition-colors duration-200",
+                  "inline-flex min-h-11 cursor-pointer items-center rounded-full px-4 py-2 text-[0.8rem] font-medium transition-colors duration-200",
                   active
                     ? "bg-ink text-ground"
                     : "border border-[var(--color-line)] text-ink-3 hover:border-[var(--color-line-2)] hover:text-ink",

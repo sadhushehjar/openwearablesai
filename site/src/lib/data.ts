@@ -15,8 +15,7 @@ export const PERSON = {
 } as const;
 
 export const NAV = [
-  { href: "#interests", label: "Research Interests" },
-  { href: "#projects", label: "Projects" },
+  { href: "#projects", label: "Research Projects" },
   { href: "#news", label: "News" },
   { href: "#publications", label: "Publications" },
   { href: "#open-source", label: "Open Source" },
@@ -32,10 +31,14 @@ export interface Beat {
   title: string;
   /** secondary line under the name on the opening beat */
   subtitle?: string;
+  /** a trimmed body for narrow screens, where the full one runs too long */
+  bodyShort?: string;
   body: string;
   align: "center" | "left" | "right";
   /** drawn onto the canvas readout — anchors each beat to a project */
   stamp: string;
+  /** shown in the opening banner, so the visitor meets the person first */
+  portrait?: string;
   /** the scene behind this beat: real imagery from that project */
   image?: string;
   imageAlt?: string;
@@ -48,24 +51,11 @@ export const BEATS: Beat[] = [
     eyebrow: "PhD · Electrical Engineering",
     title: "Shehjar Sadhu",
     subtitle: "Wearable digital health research.",
-    body: "Internet of Medical Things platforms that integrate wearable sensors and artificial intelligence for remote psycho-physiological health monitoring.",
+    body: "I design Internet of Medical Things platforms end to end: device firmware, mobile and cloud infrastructure, signal processing, and the clinician-facing interfaces where longitudinal data is finally read. The recurring question across all of it is which parts of a real-world stream can be trusted.",
+    bodyShort: "Internet of Medical Things platforms that integrate wearable sensors and AI for remote psycho-physiological health monitoring.",
     align: "center",
     stamp: "WEARABLE BIOSENSING LAB · UNIVERSITY OF RHODE ISLAND",
-  },
-  {
-    signal: "ecg",
-    eyebrow: "Research interests",
-    title: "Sensing, inference,\nand the clinic.",
-    body: "I design Internet of Medical Things platforms end to end: device firmware, mobile and cloud infrastructure, signal processing, and the clinician-facing interfaces where longitudinal data is finally read. The recurring question across all of it is which parts of a real-world stream can be trusted.",
-    align: "left",
-    stamp: "WEARABLE BIOSENSING LAB · UNIVERSITY OF RHODE ISLAND",
-    image: "/media/portrait-lab.jpg",
-    imageAlt: "Shehjar Sadhu working in the Wearable Biosensing Lab.",
-    specs: [
-      "Wearable digital health systems",
-      "Psycho-physiological signal analysis",
-      "Applied machine learning and data quality",
-    ],
+    portrait: "/media/portrait-face.jpg",
   },
   {
     signal: "ecg",

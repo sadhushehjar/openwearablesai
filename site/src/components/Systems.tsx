@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SYSTEMS } from "@/lib/data";
+import { SYSTEMS, INTERESTS, METRICS } from "@/lib/data";
 import { SIGNAL_BY_ID } from "@/lib/signals";
 
 /** Smartwatch work leads; Array#sort is stable, so order within a group holds. */
@@ -69,6 +69,41 @@ export default function Systems() {
     return () => ctx.revert();
   }, []);
 
+  // count-up on the metrics, which moved in from the old interests section
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const nums = Array.from(root.querySelectorAll<HTMLElement>("[data-count]"));
+    const fmt = new Intl.NumberFormat("en-US");
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      nums.forEach((n) => (n.textContent = fmt.format(Number(n.dataset.count))));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const el = e.target as HTMLElement;
+          io.unobserve(el);
+          const target = Number(el.dataset.count);
+          const t0 = performance.now();
+          const step = (now: number) => {
+            const k = Math.min(1, (now - t0) / 1400);
+            const eased = k === 1 ? 1 : 1 - Math.pow(2, -10 * k);
+            el.textContent = fmt.format(Math.round(target * eased));
+            if (k < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+      },
+      { threshold: 0.5 },
+    );
+    nums.forEach((n) => io.observe(n));
+    return () => io.disconnect();
+  }, []);
+
   return (
     <section
       id="projects"
@@ -77,7 +112,7 @@ export default function Systems() {
     >
       <div className="u-shell">
         <div data-reveal className="max-w-3xl">
-          <span className="u-eyebrow">Projects</span>
+          <span className="u-eyebrow">Research Projects</span>
           <h2 className="mt-4 text-[clamp(2rem,4.4vw,3.2rem)]">
             Research projects.
             <br />
@@ -89,6 +124,45 @@ export default function Systems() {
             settings, in collaboration with clinical and industry partners.
           </p>
         </div>
+
+        {/* the interests that run through the work, and what it adds up to */}
+        <dl
+          data-reveal
+          className="mt-12 grid grid-cols-2 gap-x-8 gap-y-6 border-y border-[var(--color-line)] py-7 sm:grid-cols-4"
+        >
+          {METRICS.map((m) => (
+            <div key={m.label}>
+              <dd className="font-display text-[clamp(1.8rem,3vw,2.4rem)] font-semibold tracking-[-0.04em] tabular-nums">
+                <span data-count={m.value}>0</span>
+              </dd>
+              <dt className="mt-0.5 text-[0.86rem] font-medium text-ink-2">
+                {m.label}
+              </dt>
+              <p className="font-mono text-[0.64rem] text-ink-4">{m.sub}</p>
+            </div>
+          ))}
+        </dl>
+
+        <ul className="mt-10 grid gap-x-10 gap-y-7 sm:grid-cols-2 lg:grid-cols-3">
+          {INTERESTS.map((it, i) => (
+            <li
+              key={it.title}
+              data-reveal
+              style={{ "--reveal-delay": `${i * 50}ms` } as React.CSSProperties}
+            >
+              <h3 className="flex items-baseline gap-2.5 text-[0.98rem] font-semibold tracking-[-0.015em]">
+                <span
+                  aria-hidden="true"
+                  className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+                />
+                {it.title}
+              </h3>
+              <p className="mt-1.5 pl-4 text-[0.9rem] leading-relaxed text-ink-3">
+                {it.body}
+              </p>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className="mt-16 flex flex-col gap-[clamp(64px,9vw,128px)]">

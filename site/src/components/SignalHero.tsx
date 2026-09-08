@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { BEATS } from "@/lib/data";
+import { BEATS, PERSON } from "@/lib/data";
 import {
   SIGNAL_BY_ID,
   hexToRgb,
@@ -32,9 +32,10 @@ import {
  * This is the single most important number for how the page feels. At 88vh the
  * intro consumed 5.4 screens of scrolling and read as a frozen page. 70vh is the
  * balance once each beat carries its own footage: enough room for a shot to
- * land and dissolve, without the stall that a static frame produces.
+ * land and dissolve, without the stall that a static frame produces. Kept low
+ * deliberately: the intro is the thing visitors scroll past to reach the work.
  */
-const SEGMENT_VH = 58;
+const SEGMENT_VH = 46;
 
 export default function SignalHero() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -101,13 +102,17 @@ export default function SignalHero() {
       : [];
 
     const paintText = (s: number) => {
+      /* Copy holds, then swaps quickly.
+         Images may overlap — that is a dissolve. Two headlines at half opacity
+         are just unreadable, so the text sits at full strength through most of
+         its beat and clears before the next one arrives. */
       for (let i = 0; i < beatEls.length; i++) {
         const d = Math.abs(s - i);
-        const o = 1 - smooth((d - 0.26) / 0.46);
+        const o = 1 - smooth((d - 0.3) / 0.2);
         const el = beatEls[i];
         el.style.opacity = String(o);
-        el.style.transform = `translate3d(0, ${(s - i) * -46}px, 0)`;
-        el.style.filter = o > 0.99 ? "none" : `blur(${(1 - o) * 7}px)`;
+        el.style.transform = `translate3d(0, ${(s - i) * -36}px, 0)`;
+        el.style.filter = o > 0.99 ? "none" : `blur(${(1 - o) * 5}px)`;
         el.style.visibility = o < 0.01 ? "hidden" : "visible";
       }
 
@@ -187,7 +192,7 @@ export default function SignalHero() {
 
       // The trace gets out of the way of the copy: centred beats push it low,
       // side-aligned beats let it run through the middle of the frame.
-      const bias = (b: (typeof BEATS)[number]) => (b.align === "center" ? 0.72 : 0.5);
+      const bias = (b: (typeof BEATS)[number]) => (b.align === "center" ? 0.82 : 0.5);
       const midY = h * lerp(bias(beatA), bias(beatB), smooth(q));
       const amp = Math.min(h * 0.19, 176);
 
@@ -302,6 +307,11 @@ export default function SignalHero() {
       // pinning it out of the way of the copy and the scroll cue
       const pad = w < 640 ? 20 : 34;
       const baseY = 104;
+
+      // On narrow screens the readout has nowhere to sit that is not already
+      // occupied by the portrait or the headline, so it is dropped rather than
+      // stacked on top of them.
+      if (w < 640) return;
 
       ctx.textAlign = "left";
 
@@ -435,12 +445,19 @@ export default function SignalHero() {
               className={[
                 "absolute inset-0 flex items-center px-[clamp(20px,5vw,72px)] py-24",
                 // centred beats sit above the low-riding trace
-                b.align === "center" ? "pb-[30vh]" : "",
+                b.align === "center" ? "pb-[22vh]" : "",
               ].join(" ")}
               style={{ willChange: "opacity, transform, filter" }}
             >
               {/* side-aligned beats let the trace run behind the copy, so the
                   text side gets a directional wash of the page ground */}
+              {b.align === "center" && (
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(58%_46%_at_50%_42%,var(--color-ground)_0%,rgba(250,250,250,0.92)_58%,rgba(250,250,250,0)_100%)]"
+                />
+              )}
+
               {b.align !== "center" && (
                 <span
                   aria-hidden="true"
@@ -468,14 +485,30 @@ export default function SignalHero() {
                         : "max-w-[min(520px,92vw)] mr-auto",
                   ].join(" ")}
                 >
+                  {/* the banner: the visitor meets the person on arrival */}
+                  {b.portrait && (
+                    <div className="mb-7 flex justify-center">
+                      <div className="relative h-[clamp(104px,13vw,164px)] w-[clamp(104px,13vw,164px)] overflow-hidden rounded-full border border-[var(--color-line-2)] shadow-[0_18px_50px_-18px_rgba(9,9,11,0.35)]">
+                        <Image
+                          src={b.portrait}
+                          alt={`${PERSON.name}, ${PERSON.role}`}
+                          fill
+                          sizes="164px"
+                          priority
+                          className="object-cover"
+                        />
+                      </div>
+                    </div>
+                  )}
+
                   <span className="u-eyebrow mb-5 block">{b.eyebrow}</span>
                   {i === 0 ? (
                     <>
-                      <h1 className="u-lume text-[clamp(3rem,9vw,7.5rem)] leading-[0.92] font-bold tracking-[-0.05em]">
+                      <h1 className="u-lume text-[clamp(2.6rem,7.6vw,6.2rem)] leading-[0.94] font-bold tracking-[-0.05em]">
                         {b.title}
                       </h1>
                       {b.subtitle && (
-                        <p className="mt-4 text-[clamp(1.1rem,2.4vw,1.9rem)] font-medium tracking-[-0.025em] text-ink-3">
+                        <p className="mt-3 text-[clamp(1.05rem,2.1vw,1.65rem)] font-medium tracking-[-0.025em] text-ink-3">
                           {b.subtitle}
                         </p>
                       )}
@@ -495,7 +528,14 @@ export default function SignalHero() {
                           : "max-w-[46ch]",
                     ].join(" ")}
                   >
-                    {b.body}
+                    {b.bodyShort ? (
+                      <>
+                        <span className="sm:hidden">{b.bodyShort}</span>
+                        <span className="hidden sm:inline">{b.body}</span>
+                      </>
+                    ) : (
+                      b.body
+                    )}
                   </p>
 
                   {b.specs && (
@@ -526,10 +566,10 @@ export default function SignalHero() {
                         View projects
                       </a>
                       <a
-                        href="#interests"
+                        href="#publications"
                         className="rounded-full border border-[var(--color-line-2)] bg-ground/85 px-6 py-3 text-sm font-semibold text-ink-2 backdrop-blur-sm transition-colors duration-200 hover:border-accent hover:text-accent"
                       >
-                        Research interests
+                        Publications
                       </a>
                     </div>
                   )}
@@ -543,7 +583,7 @@ export default function SignalHero() {
             steps there are, which one you are on, and lets you jump. */}
         <nav
           aria-label="Introduction sequence"
-          className="absolute right-[clamp(12px,2.5vw,32px)] top-1/2 hidden -translate-y-1/2 md:block"
+          className="absolute right-[clamp(12px,2.5vw,32px)] top-1/2 hidden -translate-y-1/2 lg:block"
         >
           <ol ref={railRef} className="flex flex-col gap-1">
             {BEATS.map((b, i) => (

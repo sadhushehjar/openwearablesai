@@ -2,7 +2,6 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Reveal from "@/components/Reveal";
 import Nav from "@/components/Nav";
 import SignalHero from "@/components/SignalHero";
-import Interests from "@/components/Interests";
 import Systems from "@/components/Systems";
 import News from "@/components/News";
 import Publications from "@/components/Publications";
@@ -47,7 +46,6 @@ export default function Home() {
 
       <main>
         <SignalHero />
-        <Interests />
         <Systems />
         <News />
         <Publications />

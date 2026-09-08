@@ -74,12 +74,12 @@ export default function Nav() {
       <nav className="u-shell flex h-14 items-center gap-6" aria-label="Primary">
         <a
           href="#top"
-          className="font-display text-[0.95rem] font-semibold tracking-tight whitespace-nowrap"
+          className="inline-flex items-center font-display text-[0.95rem] font-semibold tracking-tight whitespace-nowrap max-lg:min-h-11"
         >
           {PERSON.name}
         </a>
 
-        <ul className="mx-auto hidden items-center gap-7 md:flex">
+        <ul className="mx-auto hidden items-center gap-7 lg:flex">
           {NAV.map((n) => {
             const on = active === n.href;
             return (
@@ -106,16 +106,16 @@ export default function Nav() {
           })}
         </ul>
 
-        <div className="ml-auto flex items-center gap-2 md:ml-0">
+        <div className="ml-auto flex items-center gap-2 lg:ml-0">
           <a
             href={PERSON.cv}
-            className="hidden rounded-full border border-[var(--color-line-2)] px-4 py-2 text-[0.8rem] font-medium text-ink-2 transition-colors duration-200 hover:border-accent hover:text-accent sm:inline-block"
+            className="hidden items-center rounded-full border border-[var(--color-line-2)] px-4 py-2 text-[0.8rem] font-medium text-ink-2 transition-colors duration-200 hover:border-accent hover:text-accent sm:inline-flex max-lg:min-h-11"
           >
             CV
           </a>
           <a
             href="#contact"
-            className="rounded-full bg-ink px-4 py-2 text-[0.8rem] font-semibold text-ground transition-transform duration-200 hover:-translate-y-0.5"
+            className="inline-flex items-center rounded-full bg-ink px-4 py-2 text-[0.8rem] font-semibold text-ground transition-transform duration-200 hover:-translate-y-0.5 max-lg:min-h-11"
           >
             Get in touch
           </a>
@@ -125,7 +125,7 @@ export default function Nav() {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="grid h-11 w-11 cursor-pointer place-items-center md:hidden"
+            className="grid h-11 w-11 cursor-pointer place-items-center lg:hidden"
           >
             <span className="relative block h-3 w-5">
               <span
@@ -155,7 +155,7 @@ export default function Nav() {
       {/* mobile sheet */}
       <div
         className={[
-          "u-plate fixed inset-x-0 top-14 origin-top overflow-hidden transition-all duration-400 md:hidden",
+          "u-plate fixed inset-x-0 top-14 origin-top overflow-hidden transition-all duration-400 lg:hidden",
           open ? "max-h-96 opacity-100" : "pointer-events-none max-h-0 opacity-0",
         ].join(" ")}
       >
