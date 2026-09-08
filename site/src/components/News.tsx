@@ -4,21 +4,21 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { NEWS } from "@/lib/data";
+import { NEWS, asset } from "@/lib/data";
 
 const GALLERY = [
   {
-    image: "/media/statehouse-team.jpg",
+    image: asset("/media/statehouse-team.jpg"),
     alt: "The Wearable Biosensing Lab team on the steps of the Rhode Island State House with demonstration equipment.",
     caption: "Rhode Island State House",
   },
   {
-    image: "/media/lab-team.jpg",
+    image: asset("/media/lab-team.jpg"),
     alt: "The laboratory group touring a textile fabrication facility, and a group photograph at the Fabric Discovery Center.",
     caption: "AFFOA industry visit",
   },
   {
-    image: "/media/chase-2022.jpg",
+    image: asset("/media/chase-2022.jpg"),
     alt: "Conference presentation at IEEE CHASE 2022.",
     caption: "IEEE/ACM CHASE 2022",
   },

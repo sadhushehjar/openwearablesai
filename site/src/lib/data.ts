@@ -3,6 +3,15 @@ import type { SignalId } from "./signals";
 /** set when the site is served from a subpath rather than its own domain */
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
+/**
+ * Prefix a file in public/ with the deploy base path.
+ *
+ * next/image normally applies basePath itself, but NOT when `unoptimized` is
+ * set — which static export requires — so every media src has to be prefixed
+ * here or it 404s wherever the site is served from a subpath.
+ */
+export const asset = (path: string) => `${BASE}${path}`;
+
 export const PERSON = {
   name: "Shehjar Sadhu",
   pronouns: "she/her",
@@ -11,7 +20,7 @@ export const PERSON = {
   email: "shehjar_sadhu@uri.edu",
   scholar: "https://scholar.google.com/citations?user=pOj-vwUAAAAJ&hl=en",
   medium: "https://medium.com/@shehjarsadhu",
-  cv: `${BASE}/Shehjar_Sadhu_CV.pdf`,
+  cv: asset("/Shehjar_Sadhu_CV.pdf"),
   grad: "2026",
   summary:
     "My research centres on Internet of Medical Things platforms that integrate wearable sensors and artificial intelligence to support remote psycho-physiological health monitoring.",
@@ -58,7 +67,7 @@ export const BEATS: Beat[] = [
     bodyShort: "Internet of Medical Things platforms that integrate wearable sensors and AI for remote psycho-physiological health monitoring.",
     align: "center",
     stamp: "WEARABLE BIOSENSING LAB · UNIVERSITY OF RHODE ISLAND",
-    portrait: "/media/portrait-face.jpg",
+    portrait: asset("/media/portrait-face.jpg"),
   },
   {
     signal: "ecg",
@@ -67,7 +76,7 @@ export const BEATS: Beat[] = [
     body: "Arm-worn electrocardiography acquired over multi-hour sessions and synchronised through a serverless cloud pipeline. Pan–Tompkins detection yields R-peaks, and the resulting RR intervals support heart-rate variability analysis.",
     align: "left",
     stamp: "MINDER · 2024 — PRESENT",
-    image: "/media/minder-armband.jpg",
+    image: asset("/media/minder-armband.jpg"),
     imageAlt: "The Minder textile armband worn on the upper arm, streaming ECG, EDA and IR telemetry to a cloud pipeline, beside tablet screens showing live plots and a timestamped annotation log.",
     specs: [
       "Minder · NIH R01 · UMass Chan Medical School",
@@ -82,7 +91,7 @@ export const BEATS: Beat[] = [
     body: "Consumer smartwatches provide continuous heart-rate data at low participant burden. The research contribution lies in establishing which segments meet the quality threshold required for downstream inference.",
     align: "right",
     stamp: "CAREWEAR · 2024 — PRESENT",
-    image: "/media/carewear-session.jpg",
+    image: asset("/media/carewear-session.jpg"),
     imageAlt: "A CareWear data collection session: a participant wearing a chest belt and smartwatch, beside a laptop receiving a live acceleration stream.",
     specs: [
       "CareWear · 27 participants",
@@ -97,7 +106,7 @@ export const BEATS: Beat[] = [
     body: "Twenty children observed across structured and unstructured school-like activities, with approximately sixteen hours of video annotated by seven trained raters. Power-spectral-density features outperformed time-domain features, consistent with the repetitive character of fidgeting behaviour.",
     align: "left",
     stamp: "FIDGETSENSE · 2025",
-    image: "/media/fidgetsense-behaviors.jpg",
+    image: asset("/media/fidgetsense-behaviors.jpg"),
     imageAlt: "FidgetSense behaviour classification: tri-axial motion traces feeding labelled fidgeting behaviours into a separated scatter plot.",
     specs: [
       "FidgetSense · Galaxy Watch 4 at 30 Hz",
@@ -112,7 +121,7 @@ export const BEATS: Beat[] = [
     body: "Within a browser-based puzzle platform, cursor dynamics demonstrated greater stability than the concurrently recorded wearable stream — a finding that informed the design of subsequent data-quality controls.",
     align: "right",
     stamp: "MINDGAME · 2024 — 2025",
-    image: "/media/mindgame-puzzle.jpg",
+    image: asset("/media/mindgame-puzzle.jpg"),
     imageAlt: "The MindGame tangram puzzle interface used in the ADHD behaviour study, with a shape palette, target silhouette and completion meter.",
     specs: [
       "MindGame · ACM IoT 2025, Vienna",
@@ -127,7 +136,7 @@ export const BEATS: Beat[] = [
     body: "Seven sensing modalities across eight platforms, directed towards a single objective: reducing the distance between what a sensor records and what a clinical team can act upon.",
     align: "center",
     stamp: "BIOSIGNALVIZ · 2026",
-    image: "/media/careportal-dashboard.jpg",
+    image: asset("/media/careportal-dashboard.jpg"),
     imageAlt: "A clinician-facing wearable data dashboard showing daily heart-rate charts with range selection and summary views.",
   },
 ];
@@ -200,7 +209,7 @@ export const SYSTEMS: System[] = [
     status: "Ongoing",
     year: "2024 — present",
     body: "Twenty-seven participants completed a Trier Social Stress Test while wearing a consumer smartwatch and a custom chest belt, with a Biopac system providing reference physiology. The processing pipeline cleans and merges more than 16 GB of data, then benchmarks classical machine-learning models against DeepFusionNet, a per-sensor CNN–LSTM architecture with attention that learns heart-rate and motion representations before fusion.",
-    image: "/media/carewear-session.jpg",
+    image: asset("/media/carewear-session.jpg"),
     alt: "CareWear data collection session: a seated participant wearing a chest belt and smartwatch using an under-desk exercise bike, beside a laptop displaying the companion application receiving a live acceleration stream.",
     signals: ["ecg", "ppg", "acc"],
     facts: [
@@ -220,7 +229,7 @@ export const SYSTEMS: System[] = [
     status: "Published",
     year: "2025",
     body: "Twenty children aged 6–11 completed school-like activities — academic worksheets, structured and unstructured magnetic-tile tasks, and free play — while wearing a Galaxy Watch 4 sampling at 30 Hz under video observation. Seven raters, blinded to diagnostic status, annotated approximately sixteen hours of recordings. Frequency-domain features provided the strongest discrimination, consistent with the rhythmic and repetitive nature of the target behaviours.",
-    image: "/media/fidgetsense-behaviors.jpg",
+    image: asset("/media/fidgetsense-behaviors.jpg"),
     alt: "FidgetSense concept diagram: a hand icon and three overlaid tri-axial motion traces feeding labelled behaviours — moving chair, twirling hair and finger tapping — into a scatter plot separated by a decision boundary.",
     signals: ["acc", "gyr"],
     facts: [
@@ -241,7 +250,7 @@ export const SYSTEMS: System[] = [
     status: "Published",
     year: "2024 — 2025",
     body: "An IoMT platform pairing a browser-based tangram game with a smartwatch, capturing cursor dynamics and wearable sensor streams on a common clock. Across 2,427 puzzle sessions the study assessed whether wearable data is sufficiently reliable for remote behaviour monitoring, and established a set of data-quality metrics for in-lab versus at-home comparison.",
-    image: "/media/mindgame-puzzle.jpg",
+    image: asset("/media/mindgame-puzzle.jpg"),
     alt: "MindGame interface: a tangram puzzle level showing a palette of coloured shapes on the left, a grey target silhouette in the centre, and a countdown timer with a completion meter.",
     signals: ["mouse", "acc", "gyr", "ppg", "eeg"],
     facts: [
@@ -261,7 +270,7 @@ export const SYSTEMS: System[] = [
     status: "Ongoing",
     year: "2024 — present",
     body: "A serverless extract-transform-load pipeline on AWS ingests and temporally aligns high-frequency arm-ECG, electrodermal activity and PPG from a custom textile armband across sessions exceeding six hours. A cross-platform Flutter application manages device pairing, event annotation and cloud synchronisation. The system is currently in active data collection towards a target of fifty participants.",
-    image: "/media/minder-armband.jpg",
+    image: asset("/media/minder-armband.jpg"),
     alt: "Minder system diagram: a textile armband worn on the upper arm streaming ECG, EDA, IR and battery telemetry to AWS, beside tablet screens showing live ECG and EDA plots and a timestamped event-annotation log.",
     signals: ["ecg", "eda", "ppg"],
     facts: [
@@ -281,7 +290,7 @@ export const SYSTEMS: System[] = [
     status: "Deployed",
     year: "2023 — 2025",
     body: "A containerised Flask application deployed on Google Cloud Platform, developed in collaboration with a neuropsychologist to deliver an online stigma-reduction programme. The deployment supported a feasibility and acceptability study and three peer-reviewed publications in Epilepsy & Behavior.",
-    image: "/media/riseabove-portal.jpg",
+    image: asset("/media/riseabove-portal.jpg"),
     alt: "RiseAbove portal: a participant at a desktop monitor displaying the stress-management module with before-and-after mood rating scales for deep breathing and relaxation exercises.",
     signals: [],
     facts: [
@@ -301,7 +310,7 @@ export const SYSTEMS: System[] = [
     status: "Published",
     year: "2022 — 2023",
     body: "Finger-flex sensors and an inertial measurement unit integrated into a textile glove, with a Raspberry Pi companion tablet guiding participants through standardised motor examinations in the home. Machine-learning models achieved approximately 90% accuracy for tremor and rigidity assessment, and a follow-up study characterised the effect of medication intake on in-home motor exam performance.",
-    image: "/media/kaya-gloves.jpg",
+    image: asset("/media/kaya-gloves.jpg"),
     alt: "Kaya system: e-textile gloves with finger flex sensors and an ESP32 microcontroller on the left, and a tablet companion application with a Raspberry Pi on the right.",
     signals: ["acc", "gyr"],
     facts: [
@@ -321,7 +330,7 @@ export const SYSTEMS: System[] = [
     status: "Published",
     year: "2023",
     body: "A wearable-data dashboard developed through participatory design with twenty-one clinician interviews, forming the basis of my master's thesis. Each interface affordance — carousel navigation, range selection, axis reset and export — was derived from documented clinician workflow requirements rather than assumed need.",
-    image: "/media/careportal-dashboard.jpg",
+    image: asset("/media/careportal-dashboard.jpg"),
     alt: "CarePortal dashboard: four variants of a daily heart-rate chart annotated with carousel navigation, a range slider, download and reset controls, and a box-plot summary view.",
     signals: ["ppg"],
     facts: [
@@ -341,7 +350,7 @@ export const SYSTEMS: System[] = [
     status: "Independent",
     year: "2025 — present",
     body: "A high-throughput dashboard for visualising multimodal biosignals, incorporating an agentic module that assesses signal quality and recommends an appropriate processing pipeline for artefact removal, filtering and resampling. System scalability and rendering latency were benchmarked against the MIT-BIH Arrhythmia Database.",
-    image: "/media/mindgame-architecture.jpg",
+    image: asset("/media/mindgame-architecture.jpg"),
     alt: "BiosignalViz architecture diagram showing multimodal biosignal ingestion, processing stages and a Firebase-backed performance-logging layer.",
     signals: ["ecg"],
     facts: [
