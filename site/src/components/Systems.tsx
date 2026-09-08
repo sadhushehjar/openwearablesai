@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SYSTEMS, INTERESTS, METRICS, type System } from "@/lib/data";
-import WatchStage from "./WatchStage";
+import WatchVersions from "./WatchVersions";
 import { SIGNAL_BY_ID } from "@/lib/signals";
 
 /**
@@ -153,8 +153,8 @@ export default function Systems() {
       </div>
 
       {/* ---------- wrist-worn ---------- */}
-      <div className="mt-[clamp(48px,7vw,96px)] border-y border-[var(--color-line)] bg-surface py-[clamp(24px,4vw,48px)]">
-        <WatchStage />
+      <div className="mt-[clamp(48px,7vw,96px)] border-y border-[var(--color-line)] bg-surface">
+        <WatchVersions />
       </div>
 
       <div className="mt-[clamp(48px,7vw,96px)] flex flex-col gap-[clamp(64px,9vw,128px)]">
