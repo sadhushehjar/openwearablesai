@@ -23,3 +23,6 @@ build-artifact.py
 # vendored skill sources, kept locally for reference
 10k-websites/
 scroll-world/
+
+# stray lockfile from running npm at the repo root
+/package-lock.json
