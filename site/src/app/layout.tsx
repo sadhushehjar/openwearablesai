@@ -24,17 +24,29 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
+/** The canonical home. Search engines are pointed here regardless of where a
+ *  given deploy is served from, so indexing consolidates on one address. */
+const SITE_URL = "https://openwearablesai.com";
+
 const DESCRIPTION =
-  "PhD candidate in Electrical Engineering at the University of Rhode Island, building wearable digital-health systems that carry physiological signal from the body to the clinic.";
+  "Shehjar Sadhu, PhD in Electrical Engineering from the University of Rhode Island. Wearable digital health research: Internet of Medical Things platforms, biosignal processing and applied machine learning for remote psycho-physiological monitoring.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: `${PERSON.name} — Wearable Digital Health`,
+    // the name leads, because the search that matters most is the name itself
+    default: `${PERSON.name} — Wearable Digital Health Research`,
     template: `%s · ${PERSON.name}`,
   },
   description: DESCRIPTION,
-  authors: [{ name: PERSON.name }],
+  applicationName: PERSON.name,
+  authors: [{ name: PERSON.name, url: SITE_URL }],
+  creator: PERSON.name,
+  publisher: PERSON.name,
+  alternates: { canonical: "/" },
   keywords: [
+    "Shehjar Sadhu",
+    "Shehjar Sadhu URI",
     "wearable digital health",
     "biosignal processing",
     "ECG",
@@ -45,16 +57,39 @@ export const metadata: Metadata = {
     "University of Rhode Island",
   ],
   openGraph: {
-    title: `${PERSON.name} — Wearable Digital Health`,
-    description: DESCRIPTION,
     type: "profile",
+    url: SITE_URL,
+    siteName: PERSON.name,
+    title: `${PERSON.name} — Wearable Digital Health Research`,
+    description: DESCRIPTION,
+    locale: "en_US",
+    firstName: "Shehjar",
+    lastName: "Sadhu",
+    images: [
+      {
+        url: "/media/portrait-face.jpg",
+        width: 440,
+        height: 440,
+        alt: `${PERSON.name}, ${PERSON.role}`,
+      },
+    ],
   },
-  robots: { index: true, follow: true },
+  twitter: {
+    card: "summary_large_image",
+    title: `${PERSON.name} — Wearable Digital Health Research`,
+    description: DESCRIPTION,
+    images: ["/media/portrait-face.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050507",
-  colorScheme: "dark",
+  themeColor: "#fafafa",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
