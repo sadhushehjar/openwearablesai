@@ -36,6 +36,9 @@ export interface Beat {
   align: "center" | "left" | "right";
   /** drawn onto the canvas readout — anchors each beat to a project */
   stamp: string;
+  /** the scene behind this beat: real imagery from that project */
+  image?: string;
+  imageAlt?: string;
   specs?: string[];
 }
 
@@ -51,11 +54,28 @@ export const BEATS: Beat[] = [
   },
   {
     signal: "ecg",
+    eyebrow: "Research interests",
+    title: "Sensing, inference,\nand the clinic.",
+    body: "I design Internet of Medical Things platforms end to end: device firmware, mobile and cloud infrastructure, signal processing, and the clinician-facing interfaces where longitudinal data is finally read. The recurring question across all of it is which parts of a real-world stream can be trusted.",
+    align: "left",
+    stamp: "WEARABLE BIOSENSING LAB · UNIVERSITY OF RHODE ISLAND",
+    image: "/media/portrait-lab.jpg",
+    imageAlt: "Shehjar Sadhu working in the Wearable Biosensing Lab.",
+    specs: [
+      "Wearable digital health systems",
+      "Psycho-physiological signal analysis",
+      "Applied machine learning and data quality",
+    ],
+  },
+  {
+    signal: "ecg",
     eyebrow: "01 — Cardiac signal",
     title: "Continuous\ncardiac monitoring.",
     body: "Arm-worn electrocardiography acquired over multi-hour sessions and synchronised through a serverless cloud pipeline. Pan–Tompkins detection yields R-peaks, and the resulting RR intervals support heart-rate variability analysis.",
     align: "left",
     stamp: "MINDER · 2024 — PRESENT",
+    image: "/media/minder-armband.jpg",
+    imageAlt: "The Minder textile armband worn on the upper arm, streaming ECG, EDA and IR telemetry to a cloud pipeline, beside tablet screens showing live plots and a timestamped annotation log.",
     specs: [
       "Minder · NIH R01 · UMass Chan Medical School",
       "arm-ECG, EDA and PPG acquisition",
@@ -69,6 +89,8 @@ export const BEATS: Beat[] = [
     body: "Consumer smartwatches provide continuous heart-rate data at low participant burden. The research contribution lies in establishing which segments meet the quality threshold required for downstream inference.",
     align: "right",
     stamp: "CAREWEAR · 2024 — PRESENT",
+    image: "/media/carewear-session.jpg",
+    imageAlt: "A CareWear data collection session: a participant wearing a chest belt and smartwatch, beside a laptop receiving a live acceleration stream.",
     specs: [
       "CareWear · 27 participants",
       "Trier Social Stress Test protocol",
@@ -82,6 +104,8 @@ export const BEATS: Beat[] = [
     body: "Twenty children observed across structured and unstructured school-like activities, with approximately sixteen hours of video annotated by seven trained raters. Power-spectral-density features outperformed time-domain features, consistent with the repetitive character of fidgeting behaviour.",
     align: "left",
     stamp: "FIDGETSENSE · 2025",
+    image: "/media/fidgetsense-behaviors.jpg",
+    imageAlt: "FidgetSense behaviour classification: tri-axial motion traces feeding labelled fidgeting behaviours into a separated scatter plot.",
     specs: [
       "FidgetSense · Galaxy Watch 4 at 30 Hz",
       "83.97% balanced accuracy · 0.92 ROC AUC",
@@ -95,6 +119,8 @@ export const BEATS: Beat[] = [
     body: "Within a browser-based puzzle platform, cursor dynamics demonstrated greater stability than the concurrently recorded wearable stream — a finding that informed the design of subsequent data-quality controls.",
     align: "right",
     stamp: "MINDGAME · 2024 — 2025",
+    image: "/media/mindgame-puzzle.jpg",
+    imageAlt: "The MindGame tangram puzzle interface used in the ADHD behaviour study, with a shape palette, target silhouette and completion meter.",
     specs: [
       "MindGame · ACM IoT 2025, Vienna",
       "2,427 puzzle sessions recorded",
@@ -108,6 +134,8 @@ export const BEATS: Beat[] = [
     body: "Seven sensing modalities across eight platforms, directed towards a single objective: reducing the distance between what a sensor records and what a clinical team can act upon.",
     align: "center",
     stamp: "BIOSIGNALVIZ · 2026",
+    image: "/media/careportal-dashboard.jpg",
+    imageAlt: "A clinician-facing wearable data dashboard showing daily heart-rate charts with range selection and summary views.",
   },
 ];
 

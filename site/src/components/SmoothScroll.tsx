@@ -40,11 +40,12 @@ export default function SmoothScroll() {
     /**
      * Anchor jumps, tweened by hand.
      *
-     * `lenis.scrollTo(target, { duration })` is cancelled by the pointerdown of
-     * the very click that triggers it, stranding the jump partway; its `lock`
-     * option suppresses the scroll entirely rather than just the interruption.
-     * So we run the easing ourselves and push each frame in with
-     * `immediate: true`, which no interruption logic touches.
+     * Lenis is configured in lerp mode, and in that mode a `duration` passed to
+     * `scrollTo` is silently ignored — the call returns and nothing moves. Its
+     * `lock` option suppresses the scroll outright rather than just guarding
+     * against interruption. `immediate: true` is the one form that reliably
+     * moves the instance, so we run the easing ourselves and push each frame
+     * in through it.
      */
     let jumpRaf = 0;
     const cancelJump = () => cancelAnimationFrame(jumpRaf);

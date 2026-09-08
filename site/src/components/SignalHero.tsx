@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { BEATS } from "@/lib/data";
 import {
@@ -29,16 +30,18 @@ import {
  * Scroll distance per beat.
  *
  * This is the single most important number for how the page feels. At 88vh the
- * intro consumed 5.4 screens of scrolling and read as a frozen page; 48vh keeps
- * the sequence cinematic while letting a normal flick carry you through a beat.
+ * intro consumed 5.4 screens of scrolling and read as a frozen page. 70vh is the
+ * balance once each beat carries its own footage: enough room for a shot to
+ * land and dissolve, without the stall that a static frame produces.
  */
-const SEGMENT_VH = 48;
+const SEGMENT_VH = 58;
 
 export default function SignalHero() {
   const trackRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const beatsRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLOListElement>(null);
+  const scenesRef = useRef<HTMLDivElement>(null);
   const cueRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLSpanElement>(null);
 
@@ -93,6 +96,9 @@ export default function SignalHero() {
     const railEls = railRef.current
       ? Array.from(railRef.current.querySelectorAll<HTMLElement>("[data-dash]"))
       : [];
+    const sceneEls = scenesRef.current
+      ? Array.from(scenesRef.current.querySelectorAll<HTMLElement>("[data-scene]"))
+      : [];
 
     const paintText = (s: number) => {
       for (let i = 0; i < beatEls.length; i++) {
@@ -103,6 +109,22 @@ export default function SignalHero() {
         el.style.transform = `translate3d(0, ${(s - i) * -46}px, 0)`;
         el.style.filter = o > 0.99 ? "none" : `blur(${(1 - o) * 7}px)`;
         el.style.visibility = o < 0.01 ? "hidden" : "visible";
+      }
+
+      /* --- the footage: each project scene dissolves into the next ---
+         Scenes hold a wider window than the copy so consecutive shots overlap,
+         which is what reads as a dissolve rather than a swap. The slow scale
+         means the frame is never still while it is on screen. */
+      for (const el of sceneEls) {
+        const i = Number(el.dataset.scene);
+        const d = s - i;
+        const ad = Math.abs(d);
+        const o = 1 - smooth((ad - 0.34) / 0.62);
+        el.style.opacity = String(o);
+        el.style.visibility = o < 0.01 ? "hidden" : "visible";
+        // push in on approach, ease out on exit — a slow dolly, not a cut
+        const scale = 1.075 - 0.075 * clamp01(1 - ad);
+        el.style.transform = `translate3d(0, ${d * -34}px, 0) scale(${scale})`;
       }
       for (let i = 0; i < railEls.length; i++) {
         const on = Math.abs(s - i) < 0.5;
@@ -351,6 +373,48 @@ export default function SignalHero() {
       ))}
 
       <div className="sticky top-0 h-svh overflow-hidden bg-[radial-gradient(120%_80%_at_50%_45%,var(--color-void)_0%,var(--color-ground)_62%)]">
+        {/* ---- the footage ----
+            One frame per project, dissolving into the next as the scroll
+            scrubs. Real imagery from the studies, not stock or generated. */}
+        <div ref={scenesRef} aria-hidden="true" className="absolute inset-0">
+          {BEATS.map((b, i) =>
+            b.image ? (
+              <div
+                key={i}
+                data-scene={i}
+                className={[
+                  "absolute inset-y-0 w-full",
+                  // the frame sits opposite the copy so they never fight
+                  b.align === "right"
+                    ? "left-0 lg:w-[62%]"
+                    : b.align === "left"
+                      ? "right-0 left-auto lg:w-[62%]"
+                      : "left-0",
+                ].join(" ")}
+                style={{ willChange: "opacity, transform" }}
+              >
+                <div className="relative h-full w-full">
+                  <Image
+                    src={b.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 62vw"
+                    priority={i <= 1}
+                    className="object-contain object-center p-[clamp(16px,4vw,64px)]"
+                  />
+                </div>
+              </div>
+            ) : null,
+          )}
+        </div>
+
+        {/* the ground reads through the footage, keeping it a backdrop */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[var(--color-ground)]/45"
+        />
+
+        {/* the signal runs over the footage, like a readout on a monitor */}
         <canvas
           ref={canvasRef}
           aria-hidden="true"

@@ -19,3 +19,7 @@ build-artifact.py
 *.pem
 .env*
 !.env.example
+
+# vendored skill sources, kept locally for reference
+10k-websites/
+scroll-world/
