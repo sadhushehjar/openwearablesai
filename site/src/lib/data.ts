@@ -187,7 +187,13 @@ export interface System {
   id: string;
   name: string;
   tagline: string;
-  status: "Ongoing" | "Deployed" | "Published" | "Independent";
+  status:
+    | "Ongoing"
+    | "Deployed"
+    | "Published"
+    | "Submitted"
+    | "In preparation"
+    | "Independent";
   /** smartwatch work leads the showcase; other platforms follow */
   group: "Smartwatch" | "Other";
   year: string;
@@ -206,7 +212,7 @@ export const SYSTEMS: System[] = [
     group: "Smartwatch",
     name: "CareWear",
     tagline: "Multimodal stress detection platform for mental health.",
-    status: "Ongoing",
+    status: "In preparation",
     year: "2024 — present",
     body: "Twenty-seven participants completed a Trier Social Stress Test while wearing a consumer smartwatch and a custom chest belt, with a Biopac system providing reference physiology. The processing pipeline cleans and merges more than 16 GB of data, then benchmarks classical machine-learning models against DeepFusionNet, a per-sensor CNN–LSTM architecture with attention that learns heart-rate and motion representations before fusion.",
     image: asset("/media/carewear-session.jpg"),
@@ -216,7 +222,7 @@ export const SYSTEMS: System[] = [
       { k: "Participants", v: "27 (13 M · 14 F)" },
       { k: "Data volume", v: "Over 16 GB" },
       { k: "Best configuration", v: "2 s window, IMU — 0.76 b-acc" },
-      { k: "Target venue", v: "IEEE Trans. Affective Computing" },
+      { k: "Status", v: "Manuscript in preparation" },
     ],
     stack: ["PyTorch", "Pan–Tompkins", "scikit-learn", "Kotlin"],
     partner: "Brown Health",
@@ -226,7 +232,7 @@ export const SYSTEMS: System[] = [
     group: "Smartwatch",
     name: "FidgetSense",
     tagline: "Fidgeting behaviour detection in children with ADHD.",
-    status: "Published",
+    status: "Submitted",
     year: "2025",
     body: "Twenty children aged 6–11 completed school-like activities — academic worksheets, structured and unstructured magnetic-tile tasks, and free play — while wearing a Galaxy Watch 4 sampling at 30 Hz under video observation. Seven raters, blinded to diagnostic status, annotated approximately sixteen hours of recordings. Frequency-domain features provided the strongest discrimination, consistent with the rhythmic and repetitive nature of the target behaviours.",
     image: asset("/media/fidgetsense-behaviors.jpg"),
@@ -463,7 +469,7 @@ export const PUBS: Pub[] = [
     year: "2026",
     kind: "Journal",
     first: true,
-    note: "Under review",
+    note: "Submitted",
   },
   {
     authors: "Sadhu S, Bhagat N, Castillo E, Weyandt L, Mankodiya K, Solanki D",
