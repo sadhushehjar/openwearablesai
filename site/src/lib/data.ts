@@ -1,5 +1,8 @@
 import type { SignalId } from "./signals";
 
+/** set when the site is served from a subpath rather than its own domain */
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export const PERSON = {
   name: "Shehjar Sadhu",
   pronouns: "she/her",
@@ -8,7 +11,7 @@ export const PERSON = {
   email: "shehjar_sadhu@uri.edu",
   scholar: "https://scholar.google.com/citations?user=pOj-vwUAAAAJ&hl=en",
   medium: "https://medium.com/@shehjarsadhu",
-  cv: "/Shehjar_Sadhu_CV.pdf",
+  cv: `${BASE}/Shehjar_Sadhu_CV.pdf`,
   grad: "2026",
   summary:
     "My research centres on Internet of Medical Things platforms that integrate wearable sensors and artificial intelligence to support remote psycho-physiological health monitoring.",
