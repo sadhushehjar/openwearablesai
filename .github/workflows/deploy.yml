@@ -37,7 +37,11 @@ jobs:
       - name: Build static export
         run: npm run build
 
+      # enablement:true turns Pages on if it is ever off, rather than failing
+      # the run the way the first deploy did
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
