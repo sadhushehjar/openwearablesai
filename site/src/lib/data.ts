@@ -30,6 +30,7 @@ export const NAV = [
   { href: "#projects", label: "Research Projects" },
   { href: "#news", label: "News" },
   { href: "#publications", label: "Publications" },
+  { href: "#awards", label: "Awards" },
   { href: "#open-source", label: "Open Source" },
 ];
 
@@ -192,7 +193,7 @@ export interface System {
     | "Deployed"
     | "Published"
     | "Submitted"
-    | "In preparation"
+    | "Under preparation"
     | "Independent";
   /** smartwatch work leads the showcase; other platforms follow */
   group: "Smartwatch" | "Other";
@@ -212,7 +213,7 @@ export const SYSTEMS: System[] = [
     group: "Smartwatch",
     name: "CareWear",
     tagline: "Multimodal stress detection platform for mental health.",
-    status: "In preparation",
+    status: "Under preparation",
     year: "2024 — present",
     body: "Twenty-seven participants completed a Trier Social Stress Test while wearing a consumer smartwatch and a custom chest belt, with a Biopac system providing reference physiology. The processing pipeline cleans and merges more than 16 GB of data, then benchmarks classical machine-learning models against DeepFusionNet, a per-sensor CNN–LSTM architecture with attention that learns heart-rate and motion representations before fusion.",
     image: asset("/media/carewear-session.jpg"),
@@ -377,11 +378,6 @@ export const SYSTEMS: System[] = [
 export const NEWS = [
   {
     year: "2025",
-    title: "Best Demo Award, IEEE BSN",
-    body: "The Minder armband system received the Best Demo Award at the IEEE International Conference on Body Sensor Networks.",
-  },
-  {
-    year: "2025",
     title: "MindGame featured in Rhody Today",
     body: "The University of Rhode Island news office published a feature on the ADHD puzzle-game platform and its wearable data collection.",
   },
@@ -405,6 +401,32 @@ export const NEWS = [
     title: "Invited to the Rhode Island State House",
     body: "Presented wearable health research to state legislators alongside the Wearable Biosensing Lab team.",
   },
+];
+
+/* ------------------------------------------------------------------ */
+/* awards and honours                                                  */
+/* ------------------------------------------------------------------ */
+
+export interface Award {
+  year: string;
+  title: string;
+  body: string;
+  /** the work it was given for, where that is a named project */
+  project?: string;
+}
+
+export const AWARDS: Award[] = [
+  {
+    year: "2025",
+    title: "Best Demo Award",
+    body: "IEEE International Conference on Body Sensor Networks, for the armband system and its cloud pipeline.",
+    project: "Minder",
+  },
+  {
+    year: "2025",
+    title: "Enhancement of Graduate Research Award",
+    body: "University of Rhode Island, for Samya: a jewellery-like wrist wearable for managing stress in women with polycystic ovary syndrome.",
+  },
   {
     year: "2024, 2023",
     title: "IEEE BSN Student Travel Award",
@@ -412,8 +434,83 @@ export const NEWS = [
   },
   {
     year: "2022",
-    title: "IEEE/ACM CHASE",
-    body: "Student travel award for the International Conference on Connected Health: Applications, Systems and Engineering Technologies.",
+    title: "IEEE CHASE Student Travel Award",
+    body: "International Conference on Connected Health: Applications, Systems and Engineering Technologies.",
+  },
+  {
+    year: "2022",
+    title: "NSF–NIH Smart Health Workshop",
+    body: "Proposal selected for presentation at the national workshop.",
+    project: "CareHub",
+  },
+  {
+    year: "2022",
+    title: "Enhancement of Graduate Research Award",
+    body: "University of Rhode Island, for a smart diet system for polycystic kidney disorder.",
+  },
+  {
+    year: "2020",
+    title: "IEEE CASS COVID-19 Special Student Design Competition",
+    body: "Third place, for RespDetect: a smart mask for respiratory monitoring.",
+    project: "RespDetect",
+  },
+  {
+    year: "2019",
+    title: "Undergraduate Research Grant",
+    body: "University of Rhode Island, for remote homology detection. Principal investigator: Dr Noah Daniels.",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/* education and milestones — the banner timeline                      */
+/* ------------------------------------------------------------------ */
+
+export interface Milestone {
+  year: string;
+  span: string;
+  title: string;
+  detail: string;
+  /** the current position on the spine */
+  now?: boolean;
+}
+
+export const TIMELINE: Milestone[] = [
+  {
+    year: "2026",
+    span: "May 2026",
+    title: "PhD, Electrical Engineering",
+    detail: "University of Rhode Island. Advisors: Dr Kunal Mankodiya and Dr Dhaval Solanki.",
+    now: true,
+  },
+  {
+    year: "2025",
+    span: "IEEE BSN",
+    title: "Best Demo Award",
+    detail: "For the Minder armband system.",
+  },
+  {
+    year: "2022",
+    span: "Jan 2022",
+    title: "PhD begins",
+    detail: "Digital health, artificial intelligence and wearable sensors.",
+  },
+  {
+    year: "2021",
+    span: "Dec 2021",
+    title: "MS, Electrical Engineering",
+    detail: "Thesis: CarePortal, a clinician-centred digital health portal for wearable data analytics.",
+  },
+  {
+    year: "2020",
+    span: "May 2020",
+    title: "BS, Computer Science & Data Science",
+    detail: "Dual degree, Department of Computer Science and Statistics.",
+  },
+  {
+    year: "2016",
+    span: "Sep 2016",
+    title: "Arrived at URI",
+    detail: "From New Delhi to Kingston, Rhode Island.",
   },
 ];
 
@@ -431,7 +528,7 @@ export const OPEN_SOURCE = [
   },
   {
     name: "CareWear dataset",
-    kind: "Dataset — in preparation",
+    kind: "Dataset — under preparation",
     body: "A multimodal psycho-physiological dataset collected from a consumer smartwatch and custom chest belt under a Trier Social Stress Test protocol, with concurrent Biopac reference physiology.",
     meta: "Release pending publication",
   },
@@ -486,7 +583,7 @@ export const PUBS: Pub[] = [
     authors: "Sadhu S, Solanki D, Mankodiya K, Al Rumon MA",
     title:
       "CareWear: A multimodal physiological dataset collected via a consumer-based wearable device for stress monitoring",
-    venue: "In preparation",
+    venue: "Under preparation",
     year: "2026",
     kind: "Journal",
     first: true,

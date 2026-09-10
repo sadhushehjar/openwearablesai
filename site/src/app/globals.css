@@ -170,3 +170,44 @@
     transform: none !important;
   }
 }
+
+/* ---------- banner timeline ---------- */
+@layer utilities {
+  /* the spine draws itself downward once */
+  @keyframes tl-draw {
+    from { transform: scaleY(0); }
+    to   { transform: scaleY(1); }
+  }
+  /* each milestone arrives from the spine outward */
+  @keyframes tl-in {
+    from { opacity: 0; transform: translate3d(14px, 6px, 0); }
+    to   { opacity: 1; transform: none; }
+  }
+  /* the live node keeps a slow beat, in keeping with the rest of the page */
+  @keyframes tl-beat {
+    0%, 100% { transform: scale(1);   opacity: 0.5; }
+    45%      { transform: scale(2.4); opacity: 0;   }
+  }
+
+  .tl-spine {
+    transform-origin: top;
+    animation: tl-draw 1.15s var(--ease-out-expo) forwards;
+  }
+  .tl-item {
+    opacity: 0;
+    animation: tl-in 0.75s var(--ease-out-expo) forwards;
+    animation-delay: var(--tl-delay, 0ms);
+  }
+  .tl-beat {
+    animation: tl-beat 2.6s ease-out infinite;
+    animation-delay: 1.2s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-spine, .tl-item, .tl-beat {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

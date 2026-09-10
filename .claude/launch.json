@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "site"],
       "port": 3000
+    },
+    {
+      "name": "reading-room",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "/Users/shehjarsadhu/Desktop/reading-room", "--", "--port", "3140"],
+      "port": 3140
     }
   ]
 }

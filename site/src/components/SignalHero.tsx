@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { BEATS, PERSON } from "@/lib/data";
+import BannerTimeline from "./BannerTimeline";
 import {
   SIGNAL_BY_ID,
   hexToRgb,
@@ -487,11 +488,11 @@ export default function SignalHero() {
                 ].join(" ")}
               >
                 {isBanner ? (
-                  <div className="grid items-center gap-x-14 gap-y-8 lg:grid-cols-[auto_minmax(0,1fr)]">
+                  <div className="grid items-center gap-x-14 gap-y-8 lg:grid-cols-[auto_minmax(0,1fr)] xl:grid-cols-[auto_minmax(0,1fr)_auto]">
                     {/* the person, sized to hold its own against the name */}
                     {b.portrait && (
                       <div className="order-first lg:justify-self-start">
-                        <div className="relative h-[clamp(132px,20vw,300px)] w-[clamp(132px,20vw,300px)] overflow-hidden rounded-full border border-[var(--color-line-2)] shadow-[0_24px_60px_-20px_rgba(9,9,11,0.38)]">
+                        <div className="relative h-[clamp(132px,20vw,300px)] w-[clamp(132px,20vw,300px)] xl:h-[248px] xl:w-[248px] overflow-hidden rounded-full border border-[var(--color-line-2)] shadow-[0_24px_60px_-20px_rgba(9,9,11,0.38)]">
                           <Image
                             src={b.portrait}
                             alt={`${PERSON.name}, ${PERSON.role}`}
@@ -505,7 +506,7 @@ export default function SignalHero() {
                     )}
 
                     <div className="text-left">
-                      <h1 className="u-lume text-[clamp(2.6rem,7.4vw,5.8rem)] leading-[0.94] font-bold tracking-[-0.05em]">
+                      <h1 className="u-lume text-[clamp(2.6rem,7.4vw,5.8rem)] leading-[0.94] font-bold tracking-[-0.05em] xl:text-[clamp(3rem,4.4vw,4.4rem)]">
                         {b.title}
                       </h1>
                       <span className="u-eyebrow mt-4 block">{b.eyebrow}</span>
@@ -540,6 +541,13 @@ export default function SignalHero() {
                           Publications
                         </a>
                       </div>
+                    </div>
+
+                    {/* the route through, on the right edge. Below xl the
+                        banner has no room for a third column, and the same
+                        milestones are covered by the CV and Awards below. */}
+                    <div className="hidden xl:block">
+                      <BannerTimeline />
                     </div>
                   </div>
                 ) : (

@@ -5,6 +5,7 @@ import SignalHero from "@/components/SignalHero";
 import Systems from "@/components/Systems";
 import News from "@/components/News";
 import Publications from "@/components/Publications";
+import Awards from "@/components/Awards";
 import OpenSource from "@/components/OpenSource";
 import Contact from "@/components/Contact";
 import { PERSON } from "@/lib/data";
@@ -94,6 +95,7 @@ export default function Home() {
         <Systems />
         <News />
         <Publications />
+        <Awards />
         <OpenSource />
         <Contact />
       </main>
