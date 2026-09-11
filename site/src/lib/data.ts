@@ -64,7 +64,7 @@ export const BEATS: Beat[] = [
     eyebrow: "PhD · Electrical Engineering",
     title: "Shehjar Sadhu",
     subtitle: "Wearable digital health research.",
-    body: "I am a wearable digital health research scientist. I design end-to-end mHealth and Internet of Medical Things AI platforms for large-scale clinical studies. My work has produced applications for quantifying the symptoms of neurological and neurodevelopmental disorders, including Parkinson's disease and ADHD. One prominent example is MindGame, a multimodal game for monitoring inattentive and hyperactive symptoms of ADHD in at-home settings using consumer wearables such as smartwatches. I am currently studying how the social networks of stroke participants can be mapped.",
+    body: "I am a wearable digital health research scientist. I design end-to-end mHealth and Internet of Medical Things AI platforms for large-scale clinical studies. My work has produced applications for quantifying the symptoms of neurological and neurodevelopmental disorders, including Parkinson's disease and ADHD. One prominent example is MindGame, a multimodal game for monitoring inattentive and hyperactive symptoms of ADHD in at-home settings using consumer wearables such as smartwatches. I am currently studying how the social networks of post-stroke patients can be mapped using ambient audio data from consumer wearables.",
     bodyShort: "I am a wearable digital health research scientist. I design end-to-end mHealth and Internet of Medical Things AI platforms for large-scale clinical studies, quantifying symptoms of Parkinson's disease and ADHD.",
     align: "center",
     stamp: "WEARABLE BIOSENSING LAB · UNIVERSITY OF RHODE ISLAND",
