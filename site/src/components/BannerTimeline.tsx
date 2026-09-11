@@ -12,7 +12,7 @@ import { TIMELINE } from "@/lib/data";
  */
 export default function BannerTimeline() {
   return (
-    <div className="relative w-[228px] shrink-0">
+    <div className="relative w-[212px] shrink-0">
       <span className="u-eyebrow mb-5 block">The route through</span>
 
       <ol className="relative">

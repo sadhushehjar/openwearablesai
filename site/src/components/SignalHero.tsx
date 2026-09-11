@@ -488,11 +488,11 @@ export default function SignalHero() {
                 ].join(" ")}
               >
                 {isBanner ? (
-                  <div className="grid items-center gap-x-14 gap-y-8 lg:grid-cols-[auto_minmax(0,1fr)] xl:grid-cols-[auto_minmax(0,1fr)_auto]">
+                  <div className="grid items-start gap-x-10 gap-y-8 lg:grid-cols-[auto_minmax(0,1fr)] xl:grid-cols-[auto_minmax(0,1fr)_auto]">
                     {/* the person, sized to hold its own against the name */}
                     {b.portrait && (
                       <div className="order-first lg:justify-self-start">
-                        <div className="relative h-[clamp(132px,20vw,300px)] w-[clamp(132px,20vw,300px)] xl:h-[248px] xl:w-[248px] overflow-hidden rounded-full border border-[var(--color-line-2)] shadow-[0_24px_60px_-20px_rgba(9,9,11,0.38)]">
+                        <div className="relative h-[clamp(132px,20vw,300px)] w-[clamp(132px,20vw,300px)] xl:mt-2 xl:h-[208px] xl:w-[208px] overflow-hidden rounded-full border border-[var(--color-line-2)] shadow-[0_24px_60px_-20px_rgba(9,9,11,0.38)]">
                           <Image
                             src={b.portrait}
                             alt={`${PERSON.name}, ${PERSON.role}`}
@@ -516,7 +516,7 @@ export default function SignalHero() {
                         </p>
                       )}
 
-                      <p className="mt-6 max-w-[54ch] text-[clamp(0.98rem,1.5vw,1.1rem)] text-ink-2 [text-wrap:pretty]">
+                      <p className="mt-6 max-w-[62ch] text-[clamp(0.98rem,1.5vw,1.1rem)] leading-[1.55] text-ink-2 [text-wrap:pretty]">
                         {b.bodyShort ? (
                           <>
                             <span className="sm:hidden">{b.bodyShort}</span>
@@ -527,18 +527,18 @@ export default function SignalHero() {
                         )}
                       </p>
 
-                      <div className="pointer-events-auto mt-9 flex flex-wrap gap-3">
+                      <div className="pointer-events-auto mt-10 flex flex-wrap gap-3">
                         <a
                           href="#projects"
-                          className="rounded-full bg-ink px-6 py-3 text-sm font-semibold text-ground transition-transform duration-200 hover:-translate-y-0.5 hover:bg-ink/90"
+                          className="rounded-full bg-ink px-7 py-3.5 text-[0.92rem] font-semibold text-ground transition-transform duration-200 hover:-translate-y-0.5"
                         >
                           View projects
                         </a>
                         <a
                           href="#publications"
-                          className="rounded-full border border-[var(--color-line-2)] bg-ground/85 px-6 py-3 text-sm font-semibold text-ink-2 backdrop-blur-sm transition-colors duration-200 hover:border-accent hover:text-accent"
+                          className="rounded-full border border-[var(--color-line-2)] px-7 py-3.5 text-[0.92rem] font-semibold text-ink-2 transition-colors duration-200 hover:border-accent hover:text-accent"
                         >
-                          Publications
+                          Read publications
                         </a>
                       </div>
                     </div>
