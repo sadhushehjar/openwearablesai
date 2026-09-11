@@ -483,12 +483,6 @@ export const TIMELINE: Milestone[] = [
     now: true,
   },
   {
-    year: "2025",
-    span: "IEEE BSN",
-    title: "Best Demo Award",
-    detail: "For the Minder armband system.",
-  },
-  {
     year: "2022",
     span: "Jan 2022",
     title: "PhD begins",
@@ -505,12 +499,6 @@ export const TIMELINE: Milestone[] = [
     span: "May 2020",
     title: "BS, Computer Science & Data Science",
     detail: "Dual degree, Department of Computer Science and Statistics.",
-  },
-  {
-    year: "2016",
-    span: "Sep 2016",
-    title: "Arrived at URI",
-    detail: "From New Delhi to Kingston, Rhode Island.",
   },
 ];
 
